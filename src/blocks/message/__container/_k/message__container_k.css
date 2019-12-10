@@ -5,3 +5,7 @@
 .message__container_k .message__text a{
     color: #fff;
 }
+
+.message__container_k .message__text p a{
+    color: #fff;
+}
