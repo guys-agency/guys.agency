@@ -1,0 +1,21 @@
+.message__text-container {
+    display: inline-flex;
+    border-radius: 13px;
+    align-items: center;
+    padding: 17px 20px;
+    position: relative;
+    background-color: #27AE60;
+}
+
+
+.message__text-container::before{
+    position: absolute; 
+    top: 13px;
+    left: -10px;
+    display: inline-block;
+    border-top: 10px solid transparent;
+    border-right: 10px solid #27AE60;
+    border-left: 0 solid #27AE60;
+    border-bottom: 10px solid transparent;
+    content: " ";
+} 

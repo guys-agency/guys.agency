@@ -1,0 +1,33 @@
+.message__container_g {
+    
+}
+
+.message__container_g .message__text-container{
+    background-color: #EAF2FD;
+    border: 1px solid #2F80ED;
+}
+
+.message__container_g .message__text{
+    color: #222;
+}
+
+.message__container_g .message__text-container::before{
+    border-right: 10px solid #2F80ED;
+    border-left: 0 solid #2F80ED;
+}
+
+.message__container_g .message__text a{
+    color: #2F80ED;
+}
+
+.message__container_g .message__text-container::after{
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: -9px;
+    display: inline-block;
+    border-top: 9px solid transparent;
+    border-right: 9px solid #EAF2FD;
+    border-left: 0 solid #EAF2FD;
+    border-bottom: 9px solid transparent;
+}

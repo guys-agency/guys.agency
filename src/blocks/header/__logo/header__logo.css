@@ -1,0 +1,25 @@
+.header__logo {
+    display: flex;
+    align-items: center;
+}
+
+.header__logo .logo__avatar {
+    width: 45px;
+    height: 45px;
+    background-color: #2F80ED;
+    color: white;
+    border-radius: 100%;
+    display: inline-block;
+    text-align: center;
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 48px;
+}
+
+.header__logo .logo__text {
+    font-weight: bold;
+    font-size: 22px;
+    margin-top: 2px;
+    margin-left: 20px;
+}
+

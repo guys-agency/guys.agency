@@ -1,0 +1,20 @@
+.sidebar__header {
+    height: 66px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #E0E0E0;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.sidebar__header a{
+    font-weight: 500;
+    font-size: 16px;
+    color: #222;
+    text-decoration: none;
+    transition: all 0.3s;
+}
+
+.sidebar__header a:hover{
+    color: #2F80ED;
+}

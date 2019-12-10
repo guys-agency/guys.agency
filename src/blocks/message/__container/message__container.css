@@ -1,0 +1,12 @@
+@import "./_a/message__container_a.css";
+@import "./_d/message__container_d.css";
+@import "./_g/message__container_g.css";
+@import "./_k/message__container_k.css";
+
+
+.message__container {
+    display: flex;
+    align-items: flex-start; 
+    max-width: 710px;
+    margin-bottom: 40px;
+}

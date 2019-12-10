@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>admin</title>
+</head>
+<body>
+    <form name="addMessage">
+        <select name="block" id="block">
+            <option value="start">начало</option>
+            <option value="about">о нас</option>
+            <option value="works">работы</option>
+            <option value="contacts">контакты</option>
+        </select>
+        <input type="number" name="index" id="index">
+        <textarea name="text" id="text" cols="30" rows="10"></textarea>
+        <select name="owner" id="id">
+                <option value="5ded05e46180969dc7a73838">Данил</option>
+                <option value="5ded0461efaf9a9dc7729105">Костя</option>
+                <option value="5ded063a6180969dc7a73839">Жора</option>
+                <option value="5ded06626180969dc7a7383a">Анна</option>
+            </select>
+        <button id="start">+</button>
+    </form>
+    <script src="./admin.js"></script>
+</body>
+</html>

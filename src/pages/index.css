@@ -1,0 +1,32 @@
+@import "../vendor/fonts.css";
+@import "../blocks/header/header.css";
+@import "../blocks/main-window/main-window.css";
+@import "../blocks/text-create-chat/text-create-chat.css";
+@import "../blocks/message/message.css";
+@import "../blocks/page-title/page-title.css";
+@import "../blocks/sidebar/sidebar.css";
+@import "../blocks/rick/rick.css";
+
+
+html, body{
+  font-family: 'Gilroy', Helvetica, Arial sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: #FFFFFF;
+  z-index: -1;
+}
+
+h1, h2, h3, h4, h5, h6{
+  font-weight: bold;
+}
+
+b{
+  font-weight: bold;
+}
+
+a.blue{
+  color: #2F80ED;
+}

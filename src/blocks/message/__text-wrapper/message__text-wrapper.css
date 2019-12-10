@@ -1,0 +1,12 @@
+.message__text-wrapper>.message__text-container:nth-child(1){
+    margin-bottom: 19px;
+}
+
+.message__text-wrapper .message__text-container::before{
+    content: none;
+}
+
+.message__text-wrapper .message__text-container:first-child::before{
+    content: " ";
+}  
+

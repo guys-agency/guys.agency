@@ -1,0 +1,10 @@
+.text-create-chat {
+    align-self: center;
+    justify-self: center;
+    text-align: center; 
+    margin-bottom: 20px;
+}
+
+.text-create-chat:last-child {
+    margin-bottom: 50px;
+}

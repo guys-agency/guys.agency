@@ -1,0 +1,14 @@
+.message__text {
+    color: #ffffff;
+    line-height: 26px; 
+    font-weight: 500;
+}
+
+.message__text a{
+    opacity: 1;
+    transition: 0.3s;
+}
+
+.message__text a:hover{
+    opacity: 0.6;
+}
