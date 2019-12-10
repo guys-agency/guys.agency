@@ -6,9 +6,18 @@
     position: fixed;
     z-index: 9999;
     top: 0;
-    right: 0;
+    right: -542px;
+    visibility: hidden;
     background-color: #fff;
     max-width: 542px;
     height: 100%;
     border-left: 1px solid #E0E0E0;
+    box-shadow: -10px 0px 40px rgba(0, 0, 0, 0);
+    transition: all 0.3s;
+}
+
+.sidebar.active{
+    right: 0;
+    visibility: visible;
+    box-shadow: -10px 0px 40px rgba(0, 0, 0, 0.07);
 }

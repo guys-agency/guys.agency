@@ -13,12 +13,18 @@
     border-radius: 15px;
     display: flex;
     margin-bottom: 20px;
+    overflow: hidden;
 }
 
 .sidebar__item .item-head .desc{
     padding:  15px;
     display: flex;
     flex-direction: column;
+}
+
+.sidebar__item .item-head img{
+    width: 135px;
+    height: 135px;
 }
 
 .sidebar__item .item-head .desc h3{
