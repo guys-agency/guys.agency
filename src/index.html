@@ -12,22 +12,22 @@
 </head>
 <body>
   <div class="header"> 
-  <div class="header__container">
-      <div class="header__logo">
-        <div class="logo__avatar">Р</div>
-        <div class="logo__text">Ребята</div> 
-      </div>
-      <div class="header__menu">
-        <ul>
-          <li><a class="active" href="">о нас</a></li>
-          <li><a href="">услуги/работы</a></li>
-          <li><a href="">контакты</a></li>
-        </ul>
-      </div>
-  </div>
+    <div class="header__container">
+        <div class="header__logo">
+          <div class="logo__avatar">Р</div>
+          <div class="logo__text">Ребята</div> 
+        </div>
+        <div class="header__menu">
+          <ul>
+            <li><a class="active" href="">о нас</a></li>
+            <li><a href="">услуги/работы</a></li>
+            <li><a href="">контакты</a></li>
+          </ul>
+        </div>
+    </div>
   </div>
   <div id="mainWindow" class="main-window">
-    <div class="message">
+    <div class="message" id="start">
       <p class="text-create-chat"><a href="" class="blue">Даня</a> создал чат <b>“Ребята”</b></p>
       <p class="text-create-chat"><a href="" class="blue">Костя</a> вступил в чат</p>
       <p class="text-create-chat"> <a href="" class="blue">Аня</a> вступила в чат</p>
@@ -49,11 +49,21 @@
         </div>
       </div>
     </div>
-    <div class="message">
+    <div class="message" id="about">
       <div class="page-title active">
         о нас
       </div>
     </div>
+    <div class="message" id="works">
+        <div class="page-title active">
+          услуги/работы
+        </div>
+      </div>
+      <div class="message" id="contacts">
+          <div class="page-title active">
+            контакты
+          </div>
+        </div>
     <div class="sidebar">
       <div class="sidebar__header">
         <a href="">закрыть</a>
@@ -135,9 +145,37 @@
       </div>
     </div>
   </div>
+  <div class="contact">
+    <div class="container">
+      <form class="contact__form">
+        <div class="contact__input">
+          <!-- <label for="email">Email</label> -->
+          <input name="email" type="text" placeholder="Email">
+        </div>
+        <div class="contact__input">
+          <!-- <label for="message">Email</label> -->
+          <textarea name="message" id="message" rows="10" placeholder="Сообщение..."></textarea>
+        </div>
+        <button class="button">Отправить</button>
+      </form>
+    </div>
+  </div>
+  <div class="footer">
+    <div class="container">
+      <ul class="footer__links">
+        <li><a href="">inst</a></li>
+        <li><a href="">fb</a></li>
+      </ul>
+      <ul class="footer__center">
+        <li><a class="mail" href="mailto:m@guys.agency">m@guys.agency</a></li>
+        <li><a href="tel:+79272486251">+7 927 248-62-51</a></li>
+      </ul>
+      <div class="footer__date">
+        Ребята © 2019
+      </div>
+    </div>
+  </div>
 
-
-  <script type="module" src="./script/index.js"></script>
-
+<script type="module" src="./script/index.js"></script>
 </body>
 </html>

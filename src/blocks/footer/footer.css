@@ -1,0 +1,14 @@
+@import "./__links/footer__links.css";
+@import "./__center/footer__center.css";
+@import "./__date/footer__date.css";
+.footer {
+    background-color: #F2F2F2;
+    border-top: 1px solid #E0E0E0;
+    height: 80px;
+}
+
+.footer .container{
+    display: flex;
+    height: 100%;
+    align-items: center;
+}

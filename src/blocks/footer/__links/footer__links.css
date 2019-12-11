@@ -1,0 +1,15 @@
+.footer__links {
+    display: flex;
+}
+
+.footer__links a{
+    color: #222;
+    text-decoration: none;
+    margin-right: 15px;
+    transition: all 0.3s;
+}
+
+.footer__links a:hover{
+    color: #2F80ED;
+}
+

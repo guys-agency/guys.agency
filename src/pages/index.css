@@ -1,11 +1,15 @@
 @import "../vendor/fonts.css";
 @import "../blocks/header/header.css";
+@import "../blocks/button/button.css";
+@import "../blocks/container/container.css";
 @import "../blocks/main-window/main-window.css";
 @import "../blocks/text-create-chat/text-create-chat.css";
 @import "../blocks/message/message.css";
 @import "../blocks/page-title/page-title.css";
 @import "../blocks/sidebar/sidebar.css";
 @import "../blocks/rick/rick.css";
+@import "../blocks/contact/contact.css";
+@import "../blocks/footer/footer.css";
 
 
 html, body{
@@ -29,4 +33,22 @@ b{
 
 a.blue{
   color: #2F80ED;
+}
+
+input, textarea{
+  font-family: Gilroy;
+  font-size: 21px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+textarea{
+  resize: none;
+}
+
+input::-webkit-input-placeholder, textarea::-webkit-input-placeholder{ /* Chrome/Opera/Safari */
+  color: #BDBDBD;
+  font-weight: 500;
+  font-size: 21px;
 }

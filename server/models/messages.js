@@ -11,9 +11,23 @@ const cardSchema = new mongoose.Schema({
 		type: Number,
 		required: true,
 	},
+	type: {
+		type: String,
+		required: true,
+		enum: ['message', 'image', 'stickers'],
+	},
+	cat: {
+		type: String,
+		required: false,
+		enum: ['brand', 'uxui', 'develop', 'research'],
+	},
 	text: {
 		type: String,
 		required: true,
+	},
+	imgRef: {
+		type: String,
+		required: false,
 	},
 	owner: {
 		type: mongoose.Schema.Types.ObjectId,

@@ -2,6 +2,9 @@
     
 }
 
+.message__container_a .message__text-container{
+    background-color: #2F80ED;
+}
 
 .message__container_a .message__text-container::before{
     border-right: 10px solid #2F80ED;
