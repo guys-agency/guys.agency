@@ -3,6 +3,15 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const routerIndex = require('./routes/index');
 
+// const MongoClient = require('mongodb').MongoClient;
+// const uri = "mongodb+srv://<username>:<password>@cluster0-ftb6g.gcp.mongodb.net/test?retryWrites=true&w=majority";
+// const client = new MongoClient(uri, { useNewUrlParser: true });
+// client.connect(err => {
+//   const collection = client.db("test").collection("devices");
+//   // perform actions on the collection object
+//   client.close();
+// });
+
 const app = express();
 const { PORT = 3000 } = process.env;
 
@@ -22,12 +31,15 @@ app.use(function(req, res, next) {
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-mongoose.connect('mongodb://localhost:27017/GuysTeam', {
-	useNewUrlParser: true,
-	useCreateIndex: true,
-	useFindAndModify: false,
-	useUnifiedTopology: true,
-});
+mongoose.connect(
+	'mongodb+srv://admin:1@cluster0-ftb6g.gcp.mongodb.net/GuysTeam?retryWrites=true&w=majority',
+	{
+		useNewUrlParser: true,
+		useCreateIndex: true,
+		useFindAndModify: false,
+		useUnifiedTopology: true,
+	}
+);
 
 app.use('/', routerIndex);
 app.all('/*', (req, res) => {
