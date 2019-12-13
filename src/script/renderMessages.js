@@ -1,56 +1,57 @@
 import { api } from './api.js';
 import Sidebar from './sidebar.js';
 
-const blocks = ['start', 'about', 'works', 'contacts'];
-
 export default class WorkWithData {
-	constructor() {
+	constructor(block, data) {
 		// console.log('object', api.getMessageByBlock('start'));
 		this.createElem = this.createElem.bind(this);
-		blocks.forEach(async block => {
-			console.log('id', block);
-			await this.renderBlock(block);
-		});
+
+		console.log('id', block);
+		this.renderBlock(block, data);
 	}
 
-	async renderBlock(block) {
-		await api.getMessageByBlock(block).then(litlData => {
-			// console.log('data', litlData);
-			const newObj = { data: {} };
-			Object.keys(litlData.data)
-				.sort((a, b) => {
-					return litlData.data[a].index - litlData.data[b].index;
-				})
-				.reduce(async (prval, i, index, arr) => {
-					console.log(
-						'block',
-						block,
-						'prval',
-						prval,
-						'owner',
-						litlData.data[Number(i)].owner._id,
-						litlData.data[Number(i)].owner._id == prval
-					);
-					if (i < arr.length - 1) {
-						if (
-							litlData.data[Number(i)].owner._id == prval ||
-							litlData.data[Number(i)].owner._id ==
-								litlData.data[Number(i) + 1].owner._id
-						) {
-							await this.createElem(
-								block,
-								litlData.data[i],
-								true
-							);
-							return litlData.data[Number(i)].owner._id;
-						}
+	renderBlock(block, allData) {
+		// api.getMessageByBlock(block).then(litlData => {
+		// console.log('data', litlData);
+		// const newObj = { data: {} };
+		const data = {};
+		let i = 0;
+		for (let key in allData) {
+			if (allData[key].block === block) {
+				data[i] = allData[key];
+				i += 1;
+			}
+		}
+		Object.keys(data)
+			.sort((a, b) => {
+				return data[a].index - data[b].index;
+			})
+			.reduce((prval, i, index, arr) => {
+				console.log(
+					'block',
+					block,
+					'prval',
+					prval,
+					'owner',
+					data[Number(i)].owner._id,
+					data[Number(i)].owner._id == prval
+				);
+				if (i < arr.length - 1) {
+					if (
+						data[Number(i)].owner._id == prval ||
+						data[Number(i)].owner._id ==
+							data[Number(i) + 1].owner._id
+					) {
+						this.createElem(block, data[i], true);
+						return data[Number(i)].owner._id;
 					}
-					newObj.data[i] = litlData.data[i];
-					await this.createElem(block, litlData.data[i], false);
-					return litlData.data[Number(i)].owner._id;
-				}, 0);
-			// console.log('objectnewObj', newObj);
-		});
+				}
+				// newObj.data[i] = data[i];
+				this.createElem(block, data[i], false);
+				return data[Number(i)].owner._id;
+			}, 0);
+		// console.log('objectnewObj', newObj);
+		// });
 	}
 
 	createElem(block, litlData, nMessage) {
@@ -79,6 +80,7 @@ export default class WorkWithData {
 			textContainer.appendChild(text);
 			this.chooseClass(messageContainer, litlData.owner._id);
 			textWrapper.appendChild(textContainer);
+			console.log('object', $('.message__container').last());
 
 			if (
 				$('.message__container')
@@ -86,6 +88,7 @@ export default class WorkWithData {
 					.find('.message__text-wrapper').length
 			) {
 				// messageContainer.appendChild(textContainer);
+				console.log('true', textContainer);
 				$('.message__text-wrapper')
 					.last()
 					.append(textContainer);
