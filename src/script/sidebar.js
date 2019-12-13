@@ -8,6 +8,11 @@ export default class Sidebar {
 				.then(data => {
 					console.log('data', data.data);
 					this.renderSidebar(data.data[i], i);
+					this.toggleSidebat();
+					$('#sidebarClose').one('click', e => {
+						e.preventDefault();
+						this.toggleSidebat();
+					});
 				})
 				.catch(err => {
 					console.log('message', 'Неожиданно, но ошибка', err);
@@ -36,5 +41,7 @@ export default class Sidebar {
 		}
 	}
 
-	toggleSidebat() {}
+	toggleSidebat(e) {
+		$('.sidebar').toggleClass('active');
+	}
 }
