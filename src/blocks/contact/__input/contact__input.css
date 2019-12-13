@@ -8,6 +8,10 @@
     border: 0px solid transparent;
 }
 
+/* .contact__input input:hover{
+    border-bottom: 1px solid #E0E0E0;
+} */
+
 .contact__input textarea{
     margin-top: 30px;
     width: 100%;

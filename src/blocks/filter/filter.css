@@ -1,0 +1,17 @@
+.filter{
+    position: fixed;
+    width: 100%;
+    left: 0;
+    top: 0;
+    transform: translateY(-66px);
+    height: 100px;
+    display: flex;
+    background: linear-gradient(180deg, #FFFFFF 0%, rgba(255, 255, 255, 0) 100%);
+    z-index: 2;
+    align-items: flex-start;
+    transition: all 0.7s;
+}
+
+.filter.active{
+     transform: translateY(66px);
+}
