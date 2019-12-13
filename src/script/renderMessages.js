@@ -27,24 +27,28 @@ export default class WorkWithData {
 				return data[a].index - data[b].index;
 			})
 			.reduce((prval, i, index, arr) => {
-				console.log(
-					'block',
-					block,
-					'prval',
-					prval,
-					'owner',
-					data[Number(i)].owner._id,
-					data[Number(i)].owner._id == prval
-				);
-				if (i < arr.length - 1) {
+				// console.log(
+				// 	'block',
+				// 	block,
+				// 	'prval',
+				// 	prval,
+				// 	'owner',
+				// 	data[Number(i)].owner._id,
+				// 	data[Number(i)].owner._id == prval
+				// );
+				if (!(i == arr.length - 1)) {
 					if (
-						data[Number(i)].owner._id == prval ||
 						data[Number(i)].owner._id ==
-							data[Number(i) + 1].owner._id
+						data[Number(i) + 1].owner._id
 					) {
+						console.log('ok :');
 						this.createElem(block, data[i], true);
 						return data[Number(i)].owner._id;
 					}
+				}
+				if (data[Number(i)].owner._id == prval) {
+					this.createElem(block, data[i], true);
+					return data[Number(i)].owner._id;
 				}
 				// newObj.data[i] = data[i];
 				this.createElem(block, data[i], false);
@@ -80,16 +84,22 @@ export default class WorkWithData {
 			textContainer.appendChild(text);
 			this.chooseClass(messageContainer, litlData.owner._id);
 			textWrapper.appendChild(textContainer);
-			console.log('object', $('.message__container').last());
+			console.log(
+				'object',
+				$('.message__container', `#${block}`)
+					.last()
+					.find('.message__text-wrapper')
+					.html()
+			);
 
 			if (
-				$('.message__container')
+				$('.message__container', `#${block}`)
 					.last()
 					.find('.message__text-wrapper').length
 			) {
 				// messageContainer.appendChild(textContainer);
 				console.log('true', textContainer);
-				$('.message__text-wrapper')
+				$('.message__text-wrapper', `#${block}`)
 					.last()
 					.append(textContainer);
 				return;
