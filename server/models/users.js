@@ -20,6 +20,14 @@ const userSchema = new mongoose.Schema({
 			message: 'Введена не ссылка',
 		}),
 	},
+	regalias: {
+		type: String,
+		required: false,
+	},
+	email: {
+		type: String,
+		required: false,
+	},
 });
 
 module.exports = mongoose.model('user', userSchema);

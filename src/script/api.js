@@ -12,6 +12,15 @@ class Api {
 			.catch(err => console.log(err));
 	}
 
+	getUserData(name) {
+		return fetch(
+			this.options.baseUrl + '/users/name/' + name,
+			Object.assign({}, this.options.header)
+		)
+			.then(statusRequest)
+			.catch(err => console.log(err));
+	}
+
 	// editUserData(name, about) {
 	// 	return fetch(
 	// 		this.options.baseUrl + '/users/me',

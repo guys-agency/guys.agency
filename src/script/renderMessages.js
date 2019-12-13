@@ -1,4 +1,5 @@
 import { api } from './api.js';
+import Sidebar from './sidebar.js';
 
 const blocks = ['start', 'about', 'works', 'contacts'];
 
@@ -58,7 +59,11 @@ export default class WorkWithData {
 		text.classList.add('message__text');
 
 		img.src = litlData.owner.avatar;
+		img.name = litlData.owner.name;
 		img.classList.add('message__pic');
+		img.addEventListener('click', function(e) {
+			const sidebar = new Sidebar([this.name]);
+		});
 
 		if (nMessage) {
 			console.log(
