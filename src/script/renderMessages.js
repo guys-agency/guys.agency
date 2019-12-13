@@ -7,39 +7,46 @@ export default class WorkWithData {
 	constructor() {
 		// console.log('object', api.getMessageByBlock('start'));
 		this.createElem = this.createElem.bind(this);
-		blocks.forEach(block => {
-			this.renderBlock(block);
+		blocks.forEach(async block => {
+			console.log('id', block);
+			await this.renderBlock(block);
 		});
 	}
 
-	renderBlock(block) {
-		api.getMessageByBlock(block).then(litlData => {
+	async renderBlock(block) {
+		await api.getMessageByBlock(block).then(litlData => {
 			// console.log('data', litlData);
 			const newObj = { data: {} };
 			Object.keys(litlData.data)
 				.sort((a, b) => {
 					return litlData.data[a].index - litlData.data[b].index;
 				})
-				.reduce((prval, i, index, arr) => {
-					console.log('arr', arr);
+				.reduce(async (prval, i, index, arr) => {
+					console.log(
+						'block',
+						block,
+						'prval',
+						prval,
+						'owner',
+						litlData.data[Number(i)].owner._id,
+						litlData.data[Number(i)].owner._id == prval
+					);
 					if (i < arr.length - 1) {
-						console.log('i', i);
 						if (
-							litlData.data[Number(i)].owner._id === prval ||
-							litlData.data[Number(i)].owner._id ===
+							litlData.data[Number(i)].owner._id == prval ||
+							litlData.data[Number(i)].owner._id ==
 								litlData.data[Number(i) + 1].owner._id
 						) {
-							console.log(
-								prval,
-								litlData.data[Number(i)].owner._id,
-								litlData.data[Number(i) + 1].owner._id
+							await this.createElem(
+								block,
+								litlData.data[i],
+								true
 							);
-							this.createElem(block, litlData.data[i], true);
 							return litlData.data[Number(i)].owner._id;
 						}
 					}
 					newObj.data[i] = litlData.data[i];
-					this.createElem(block, litlData.data[i], false);
+					await this.createElem(block, litlData.data[i], false);
 					return litlData.data[Number(i)].owner._id;
 				}, 0);
 			// console.log('objectnewObj', newObj);
@@ -66,13 +73,6 @@ export default class WorkWithData {
 		});
 
 		if (nMessage) {
-			console.log(
-				'jq',
-				$('.message__container')
-					.last()
-					.find('.message__text-wrapper')
-			);
-
 			const textWrapper = document.createElement('div');
 			textWrapper.classList.add('message__text-wrapper');
 
@@ -85,11 +85,10 @@ export default class WorkWithData {
 					.last()
 					.find('.message__text-wrapper').length
 			) {
-				console.log('test');
-				messageContainer.appendChild(textWrapper);
+				// messageContainer.appendChild(textContainer);
 				$('.message__text-wrapper')
 					.last()
-					.append(messageContainer);
+					.append(textContainer);
 				return;
 			}
 			messageContainer.appendChild(img);

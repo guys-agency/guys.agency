@@ -25,6 +25,9 @@ export default class Sidebar {
 				);
 				return;
 			}
+
+			$(`#sidebaravatarL`, sidebar).attr('src', data.avatarL);
+
 			if ($(`#sidebar${key}`, sidebar).html()) {
 				const test = `$(#sidebar${key}, sidebar).html()`;
 				console.log('ready', test, data[key]);
@@ -32,4 +35,6 @@ export default class Sidebar {
 			}
 		}
 	}
+
+	toggleSidebat() {}
 }
