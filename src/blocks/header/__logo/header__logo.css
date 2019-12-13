@@ -29,3 +29,9 @@
     margin-left: 20px;
 }
 
+@media screen and (max-width: 530px){
+    .header__logo .logo__text{
+        display: none;
+    }
+}
+

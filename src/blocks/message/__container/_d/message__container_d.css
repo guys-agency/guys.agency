@@ -45,3 +45,20 @@
     border-right: 0 solid #fff;
     border-bottom: 9px solid transparent;
 }
+
+@media screen and (max-width: 530px){
+    .message__container_d .message__text-container::before{
+        top: 11px;
+        right: -5px;
+        border-top: 5px solid transparent;
+        border-left: 5px solid #BDBDBD;
+        border-bottom: 5px solid transparent;
+    }
+    .message__container_d .message__text-container::after{
+    top: 12px;
+    right: -4px;
+    border-top: 4px solid transparent;
+    border-left: 4px solid #fff;
+    border-bottom: 4px solid transparent;
+    }
+}

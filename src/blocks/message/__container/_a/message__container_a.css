@@ -14,3 +14,10 @@
 .message__container_a .message__text a{
     color: #fff;
 }
+
+@media screen and (max-width: 530px){
+    .message__container_a .message__text-container::before{
+        border-right: 5px solid #2F80ED;
+        border-left: 0 solid #2F80ED;
+    }
+}

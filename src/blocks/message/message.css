@@ -13,3 +13,10 @@
     margin-right: auto;
     height: 100%;
 }
+
+@media screen and (max-width: 1240px){
+    .message {
+        padding-right: 10px;
+        padding-left: 10px;
+    }
+}

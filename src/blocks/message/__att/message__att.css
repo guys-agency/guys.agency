@@ -36,3 +36,13 @@
     border-top-right-radius: 13px;
     border-top-left-radius: 13px;
 }
+
+@media screen and (max-width: 530px){
+    .message__att{
+        margin-left: -11px;
+        margin-right: -11px;
+        margin-top: -8px;
+        margin-bottom: 10px;
+        width: calc(100% + 22px);
+    }
+}

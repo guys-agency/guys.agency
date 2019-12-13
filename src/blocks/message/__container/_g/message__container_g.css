@@ -31,3 +31,17 @@
     border-left: 0 solid #EAF2FD;
     border-bottom: 9px solid transparent;
 }
+
+@media screen and (max-width: 530px){
+    .message__container_g .message__text-container::before{
+        border-right: 5px solid #2F80ED;
+        border-left: 0 solid #2F80ED;
+    }
+    .message__container_g .message__text-container::after{
+        top: 12px;
+        left: -4px;
+        border-top: 4px solid transparent;
+        border-right: 4px solid #EAF2FD;
+        border-bottom: 4px solid transparent;
+    }
+}

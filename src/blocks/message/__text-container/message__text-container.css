@@ -19,3 +19,17 @@
     border-bottom: 10px solid transparent;
     content: " ";
 } 
+
+@media screen and (max-width: 530px){
+    .message__text-container {
+        padding: 10px 13px;
+    }
+    .message__text-container::before{ 
+        top: 11px;
+        left: -5px;
+        border-top: 5px solid transparent;
+        border-right: 5px solid #27AE60;
+        border-left: 0 solid #27AE60;
+        border-bottom: 5px solid transparent;
+    }
+}
