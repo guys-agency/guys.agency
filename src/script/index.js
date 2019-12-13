@@ -1,7 +1,14 @@
 import * as rick from './rick.js';
 import WorkWithData from './renderMessages.js';
+import { api } from './api.js';
 
-const workWithData = new WorkWithData();
+const blocks = ['start', 'about', 'works', 'contacts'];
+
+api.getMessages().then(data => {
+	blocks.forEach(block => {
+		const workWithData = new WorkWithData(block, data.data);
+	});
+});
 
 $('.message__pic').click(e => {
 	console.log('clic', clic);
