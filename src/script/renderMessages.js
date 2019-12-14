@@ -22,26 +22,32 @@ export default class WorkWithData {
 				i += 1;
 			}
 		}
+		// console.log('data', data);
 		Object.keys(data)
 			.sort((a, b) => {
 				return data[a].index - data[b].index;
 			})
 			.reduce((prval, i, index, arr) => {
-				// console.log(
-				// 	'block',
-				// 	block,
-				// 	'prval',
-				// 	prval,
-				// 	'owner',
-				// 	data[Number(i)].owner._id,
-				// 	data[Number(i)].owner._id == prval
-				// );
-				if (!(i == arr.length - 1)) {
+				// console.log('arr', arr);
+				// console.log('i', i);
+				if (!(index == arr.length - 1)) {
+					// console.log(
+					// 	block,
+					// 	'prval',
+					// 	prval,
+					// 	'owner',
+					// 	data[Number(i)].owner._id,
+					// 	'next',
+					// 	data[arr[index + 1]].owner._id,
+					// 	data[Number(i)].owner._id == prval,
+					// 	data[Number(i)].owner._id ===
+					// 		data[arr[index + 1]].owner._id
+					// );
 					if (
 						data[Number(i)].owner._id ==
-						data[Number(i) + 1].owner._id
+						data[arr[index + 1]].owner._id
 					) {
-						console.log('ok :');
+						// console.log('ok :');
 						this.createElem(block, data[i], true);
 						return data[Number(i)].owner._id;
 					}

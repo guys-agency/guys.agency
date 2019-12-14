@@ -16,3 +16,11 @@ $('.message__pic').click(e => {
 });
 
 console.log('$(`sidebar${key}`, sidebar)', $('.message__pic').html());
+
+$(window).on('load', function(e) {
+	$('.load-page').css('display', 'none');
+});
+
+// window.onbeforeunload = function() {
+// 	return false;
+// };
