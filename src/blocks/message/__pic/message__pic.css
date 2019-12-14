@@ -1,12 +1,12 @@
 .message__pic {
-    width: 60px;
+    min-width: 60px;
     height: 60px;
     margin-right: 15px;
 }
 
 @media screen and (max-width: 530px){
     .message__pic{
-        width: 30px;
+        min-width: 30px;
         height: 30px;
     }
 }
