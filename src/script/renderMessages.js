@@ -1,19 +1,12 @@
-import { api } from './api.js';
-import Sidebar from './sidebar.js';
+import sidebar from './sidebar.js';
 
 export default class WorkWithData {
 	constructor(block, data) {
-		// console.log('object', api.getMessageByBlock('start'));
 		this.createElem = this.createElem.bind(this);
-
-		console.log('id', block);
 		this.renderBlock(block, data);
 	}
 
 	renderBlock(block, allData) {
-		// api.getMessageByBlock(block).then(litlData => {
-		// console.log('data', litlData);
-		// const newObj = { data: {} };
 		const data = {};
 		let i = 0;
 		for (let key in allData) {
@@ -22,32 +15,17 @@ export default class WorkWithData {
 				i += 1;
 			}
 		}
-		// console.log('data', data);
+
 		Object.keys(data)
 			.sort((a, b) => {
 				return data[a].index - data[b].index;
 			})
 			.reduce((prval, i, index, arr) => {
-				// console.log('arr', arr);
-				// console.log('i', i);
 				if (!(index == arr.length - 1)) {
-					// console.log(
-					// 	block,
-					// 	'prval',
-					// 	prval,
-					// 	'owner',
-					// 	data[Number(i)].owner._id,
-					// 	'next',
-					// 	data[arr[index + 1]].owner._id,
-					// 	data[Number(i)].owner._id == prval,
-					// 	data[Number(i)].owner._id ===
-					// 		data[arr[index + 1]].owner._id
-					// );
 					if (
 						data[Number(i)].owner._id ==
 						data[arr[index + 1]].owner._id
 					) {
-						// console.log('ok :');
 						this.createElem(block, data[i], true);
 						return data[Number(i)].owner._id;
 					}
@@ -56,47 +34,27 @@ export default class WorkWithData {
 					this.createElem(block, data[i], true);
 					return data[Number(i)].owner._id;
 				}
-				// newObj.data[i] = data[i];
+
 				this.createElem(block, data[i], false);
 				return data[Number(i)].owner._id;
 			}, 0);
-		// console.log('objectnewObj', newObj);
-		// });
 	}
 
 	createElem(block, litlData, nMessage) {
-		const messageContainer = document.createElement('div');
-		const img = document.createElement('img');
 		const text = document.createElement('div');
 		const textContainer = document.createElement('div');
-
-		messageContainer.classList.add('message__container');
 
 		text.innerHTML = litlData.text;
 		textContainer.classList.add('message__text-container');
 		text.classList.add('message__text');
-
-		img.src = litlData.owner.avatar;
-		img.name = litlData.owner.name;
-		img.classList.add('message__pic');
-		img.addEventListener('click', function(e) {
-			const sidebar = new Sidebar([this.name]);
-		});
 
 		if (nMessage) {
 			const textWrapper = document.createElement('div');
 			textWrapper.classList.add('message__text-wrapper');
 
 			textContainer.appendChild(text);
-			this.chooseClass(messageContainer, litlData.owner._id);
+
 			textWrapper.appendChild(textContainer);
-			console.log(
-				'object',
-				$('.message__container', `#${block}`)
-					.last()
-					.find('.message__text-wrapper')
-					.html()
-			);
 
 			if (
 				$('.message__container', `#${block}`)
@@ -104,20 +62,39 @@ export default class WorkWithData {
 					.find('.message__text-wrapper').length
 			) {
 				// messageContainer.appendChild(textContainer);
-				console.log('true', textContainer);
+
 				$('.message__text-wrapper', `#${block}`)
 					.last()
 					.append(textContainer);
 				return;
 			}
+			const messageContainer = document.createElement('div');
+			messageContainer.classList.add('message__container');
+			const img = document.createElement('img');
+			img.src = litlData.owner.avatar;
+			img.name = litlData.owner.name;
+			img.classList.add('message__pic');
+			img.addEventListener('click', function(e) {
+				e.preventDefault();
+				sidebar.forName([this.name]);
+			});
+			this.chooseClass(messageContainer, litlData.owner._id);
 			messageContainer.appendChild(img);
 			messageContainer.appendChild(textWrapper);
 			$(`#${block}`).append(messageContainer);
 		} else {
+			const messageContainer = document.createElement('div');
+			messageContainer.classList.add('message__container');
+			const img = document.createElement('img');
+			img.src = litlData.owner.avatar;
+			img.name = litlData.owner.name;
+			img.classList.add('message__pic');
+			img.addEventListener('click', function(e) {
+				e.stopImmediatePropagation();
+				sidebar.forName([this.name]);
+			});
 			text.innerHTML = litlData.text;
 
-			// img.src = litlData.owner.avatar;
-			// messageContainer.classList.add('message__container');
 			img.classList.add('message__pic');
 			textContainer.appendChild(text);
 			messageContainer.appendChild(img);
