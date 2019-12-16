@@ -28,8 +28,8 @@ module.exports.findUserById = (req, res) => {
 		});
 };
 
-module.exports.findbyName = (req, res) => {
-	User.find({ name: req.params.search })
+module.exports.findbyData = (req, res) => {
+	User.find({ [req.params.key]: req.params.value })
 		.then(user => {
 			if (!user) {
 				return res

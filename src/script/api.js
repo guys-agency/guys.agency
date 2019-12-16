@@ -3,7 +3,7 @@ class Api {
 		this.options = options;
 	}
 
-	getUserData(userId) {
+	getUserDataById(userId) {
 		return fetch(
 			this.options.baseUrl + '/users/' + userId,
 			Object.assign({}, this.options.header)
@@ -12,9 +12,9 @@ class Api {
 			.catch(err => console.log(err));
 	}
 
-	getUserData(name) {
+	getUserData(key, value) {
 		return fetch(
-			this.options.baseUrl + '/users/name/' + name,
+			this.options.baseUrl + '/users/' + key + '/' + value,
 			Object.assign({}, this.options.header)
 		)
 			.then(statusRequest)
