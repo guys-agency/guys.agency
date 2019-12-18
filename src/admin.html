@@ -5,47 +5,53 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>admin</title>
+    <link rel="stylesheet" href="./vendor/reset.css">
+    <link rel="stylesheet" href="./pages/index.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <link rel="stylesheet" href="./pages/admin.css">
 </head>
 <body>
-    <form name="addMessage" class="form-add">
-        <label for="block">Блок</label>
-        <select name="block" id="block">
-            <option value="start">начало</option>
-            <option value="about">о нас</option>
-            <option value="works">работы</option>
-            <option value="contacts">контакты</option>
-        </select>
-        <label for="index">Номер</label>
-        <input type="number" name="index" id="index">
-        <label for="type">Тип</label>
-        <select name="type" id="type">
-            <option value="message">Сообщение</option>
-            <option value="image">Изображение</option>
-            <option value="stickers">Стикеры</option>
-        </select>
-        <label for="cat">Категории</label>
-        <select name="catPh" id="cat">
-            <option ></option>
-            <option value="brand">Брендинг</option>
-            <option value="uxui">UX/UI design</option>
-            <option value="develop">Разработка</option>
-            <option value="research">Исследования</option>
-        </select>
-        <label for="text">Текст</label>
-        <textarea name="text" id="text" cols="30" rows="10"></textarea>
-        <label for="imgRef">Изображения</label>
-        <textarea name="imgRef" id="imgRef" cols="30" rows="10" placeholder="Указывайте через запятую+пробел после запятой"></textarea>
-        <label for="owner">Автор</label>
-        <select name="owner" id="id">
-            <option value="5ded05e46180969dc7a73838">Данил</option>
-            <option value="5ded0461efaf9a9dc7729105">Костя</option>
-            <option value="5ded063a6180969dc7a73839">Жора</option>
-            <option value="5ded06626180969dc7a7383a">Анна</option>
-        </select>
-        <button id="start">+</button>
-    </form>
+    <div class="form">
+        <form name="addMessage" class="form-add">
+            <label for="block">Блок</label>
+            <select name="block" id="block">
+                <option value="start">начало</option>
+                <option value="about">о нас</option>
+                <option value="works">работы</option>
+                <option value="contacts">контакты</option>
+            </select>
+            <label for="index">Номер</label>
+            <input type="number" name="index" id="index">
+            <label for="type">Тип</label>
+            <select name="type" id="type">
+                <option value="message">Сообщение</option>
+                <option value="image">Изображение</option>
+                <option value="stickers">Стикеры</option>
+            </select>
+            <label for="cat">Категории</label>
+            <select name="cat" id="cat" multiple>
+                <option ></option>
+                <option value="brand">Брендинг</option>
+                <option value="uxui">UX/UI design</option>
+                <option value="develop">Разработка</option>
+                <option value="research">Исследования</option>
+            </select>
+            <label for="text">Текст</label>
+            <textarea name="text" id="text" cols="30" rows="10"></textarea>
+            <label for="imgRef">Изображения</label>
+            <textarea name="imgRef" id="imgRef" cols="30" rows="10" placeholder="Указывайте через запятую+пробел после запятой"></textarea>
+            <label for="owner">Автор</label>
+            <select name="owner" id="id">
+                <option value="5ded05e46180969dc7a73838">Данил</option>
+                <option value="5ded0461efaf9a9dc7729105">Костя</option>
+                <option value="5ded063a6180969dc7a73839">Жора</option>
+                <option value="5ded06626180969dc7a7383a">Анна</option>
+            </select>
+            <button id="start">+</button>
+            <button id="preLoad">Предпросмотр</button>
+        </form>
     </div>
+    <div class="pre-load"></div>
     <script src="./admin.js"></script>
 </body>
 </html>

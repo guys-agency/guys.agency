@@ -6,38 +6,58 @@ export default class WorkWithData {
 		this.renderBlock(block, data);
 	}
 
-	renderBlock(block, allData) {
-		const data = {};
-		let i = 0;
-		for (let key in allData) {
-			if (allData[key].block === block) {
-				data[i] = allData[key];
-				i += 1;
-			}
-		}
-
-		Object.keys(data)
-			.sort((a, b) => {
-				return data[a].index - data[b].index;
-			})
-			.reduce((prval, i, index, arr) => {
-				if (!(index == arr.length - 1)) {
-					if (
-						data[Number(i)].owner._id ==
-						data[arr[index + 1]].owner._id
-					) {
-						this.createElem(block, data[i], true);
-						return data[Number(i)].owner._id;
-					}
-				}
-				if (data[Number(i)].owner._id == prval) {
+	renderBlock(block, data) {
+		// const data = {};
+		// let i = 0;
+		// for (let key in allData) {
+		// 	if (allData[key].block === block) {
+		// 		data[i] = allData[key];
+		// 		i += 1;
+		// 	}
+		// }
+		Object.keys(data).reduce((prval, i, index, arr) => {
+			if (!(index == arr.length - 1)) {
+				if (
+					data[Number(i)].owner._id == data[arr[index + 1]].owner._id
+				) {
 					this.createElem(block, data[i], true);
 					return data[Number(i)].owner._id;
 				}
-
-				this.createElem(block, data[i], false);
+			}
+			if (data[Number(i)].owner._id == prval) {
+				this.createElem(block, data[i], true);
 				return data[Number(i)].owner._id;
-			}, 0);
+			}
+
+			this.createElem(block, data[i], false);
+			console.log('data[i]', data[i]);
+			return data[Number(i)].owner._id;
+		}, 0);
+
+		// Object.keys(data)
+		// 	.sort((a, b) => {
+		// 		return data[a].index - data[b].index;
+		// 	})
+		// 	.reduce((prval, i, index, arr) => {
+		// 		// setTimeout(() => {
+		// 		if (!(index == arr.length - 1)) {
+		// 			if (
+		// 				data[Number(i)].owner._id ==
+		// 				data[arr[index + 1]].owner._id
+		// 			) {
+		// 				this.createElem(block, data[i], true);
+		// 				return data[Number(i)].owner._id;
+		// 			}
+		// 		}
+		// 		if (data[Number(i)].owner._id == prval) {
+		// 			this.createElem(block, data[i], true);
+		// 			return data[Number(i)].owner._id;
+		// 		}
+
+		// 		this.createElem(block, data[i], false);
+		// 		return data[Number(i)].owner._id;
+		// 		// }, index * 1000);
+		// 	}, 0);
 	}
 
 	createElem(block, litlData, nMessage) {

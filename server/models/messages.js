@@ -19,7 +19,6 @@ const cardSchema = new mongoose.Schema({
 	cat: {
 		type: String,
 		required: false,
-		enum: ['brand', 'uxui', 'develop', 'research'],
 	},
 	text: {
 		type: String,

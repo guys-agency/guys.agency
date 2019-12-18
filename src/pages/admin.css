@@ -2,3 +2,7 @@
     display: inline-flex;
     flex-direction: column;
 }
+
+body{
+    display: flex;
+}
