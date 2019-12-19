@@ -1,0 +1,35 @@
+.message__typing{
+    display: block;
+    position: absolute;
+}
+
+.message__typing span{
+    display: inline-block;
+    background-color: #fff;
+    height: 9px;
+    width: 9px;
+    border-radius: 100%;
+    animation: 0.7s ease infinite pulse;
+}
+.message__typing span:nth-child(1) {
+  animation-delay: .1s;
+}
+ 
+.message__typing span:nth-child(2) {
+  animation-delay: .2s;
+}
+ 
+.message__typing span:nth-child(3) {
+  animation-delay: .3s;
+}
+
+@keyframes pulse {
+    0%{
+        opacity: 0.2;
+        transform: scale(0.6);
+    }
+    100%{
+        opacity: 1;
+        transform: scale(1);
+    }
+}

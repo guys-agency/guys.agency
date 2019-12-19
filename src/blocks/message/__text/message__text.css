@@ -3,6 +3,18 @@
     line-height: 26px; 
     font-weight: 500;
     font-size: 16px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+}
+
+.message__text.visible{
+    width: initial;
+    height: initial;
+    opacity: 1;
+    visibility: visible; 
 }
 
 @media screen and (max-width: 530px){

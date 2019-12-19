@@ -5,6 +5,8 @@
     padding: 17px 20px;
     position: relative;
     background-color: #27AE60;
+    min-height: 25px;
+    min-width: 35px;
 }
 
 
