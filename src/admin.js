@@ -62,7 +62,7 @@ function selectShow() {
 	for (var n = 0; n < len; n++) {
 		if (document.forms.addMessage.cat.options[n].selected == true) {
 			selectElements +=
-				document.forms.addMessage.cat.options[n].value + ' ';
+				document.forms.addMessage.cat.options[n].value + ', ';
 		}
 	}
 

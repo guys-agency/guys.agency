@@ -1,3 +1,5 @@
+@import './_black/message__typing_black.css';
+
 .message__typing{
     display: block;
     position: absolute;

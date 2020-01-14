@@ -19,33 +19,32 @@ api.getMessages().then(data => {
 			{},
 			data.data[key]
 		);
-		// switch (data.data[key].block) {
-		// 	case 'start':
-		// 		dataSort['start'][data.data[key].index] = Object.assign(
-		// 			{},
-		// 			data.data[key]
-		// 		);
-
-		// 		break;
-		// 	case 'about':
-		// 		dataSort['about'][data.data[key].index] = data.data[key];
-
-		// 		break;
-		// 	case 'works':
-		// 		dataSort['works'][data.data[key].index] = data.data[key];
-
-		// 		break;
-		// 	case 'contacts':
-		// 		dataSort['contacts'][data.data[key].index] = data.data[key];
-
-		// 		break;
-		// 	default:
-		// 		break;
-		// }
 	}
 	console.log('dataSort', dataSort);
 	blocks.forEach(block => {
-		const workWithData = new WorkWithData(block, dataSort[block]);
+		if (block == 'start') {
+			const workWithData = new WorkWithData(block, dataSort[block]);
+			$(`#${block}`).attr('appr', 'false');
+		} else {
+			$(window).scroll(function() {
+				// console.log(
+				// 	'object',
+				// 	$(this).height() - $(`#${block}`).height() - 100
+				// );
+
+				if (
+					($(this).scrollTop() + $(this).height() >
+						$(`#${block}`).position().top) &
+					($(`#${block}`).attr('appr') != 'false')
+				) {
+					const workWithData = new WorkWithData(
+						block,
+						dataSort[block]
+					);
+					$(`#${block}`).attr('appr', 'false');
+				}
+			});
+		}
 	});
 	profTypes.forEach(elem => {
 		const test = `#${elem}H`;
