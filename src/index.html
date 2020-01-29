@@ -8,6 +8,9 @@
   <link rel="stylesheet" href="./vendor/reset.css">
   <link rel="stylesheet" href="./pages/index.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script> 
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
 
 </head>
 <body>
@@ -36,7 +39,7 @@
       <p class="text-create-chat"><a href="" class="blue">Костя</a> вступил в чат</p>
       <p class="text-create-chat"> <a href="" class="blue">Аня</a> вступила в чат</p>
       <p class="text-create-chat"><a href="" class="blue">Джордж</a> вступил в чат</p>
-      <div class="message__container message__container_k">
+      <!-- <div class="message__container message__container_k">
         <img src="./images/Message/AvatarKos.png" alt="" class="message__pic">
         <div class="message__text-container">
           <div class="message__typing">
@@ -65,8 +68,8 @@
               <a href="motorfrist.ru">motorfirst.ru</a> — редизайн интернет-магазина для power-спорта
             </p>
           </div>
-        </div>
-      </div>
+        </div> -->
+      <!-- </div> -->
     </div>
     <div class="message" id="about">
       <div class="page-title active">
@@ -203,6 +206,8 @@
   </div>
 
 <script type="module" src="./script/index.js"></script>
+<script type="text/babel" src="./script/codeOnReact.js"></script>
+
 </body>
 </html>
 
