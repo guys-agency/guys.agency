@@ -54,10 +54,10 @@ const profTypes = ['designs', 'devs', 'marketers'];
 // 	$('.load-page').css('display', 'none');
 // });
 
-let cords = ['scrollX', 'scrollY'];
+const cords = ['scrollX', 'scrollY'];
 // Перед закрытием записываем в локалсторадж window.scrollX и window.scrollY как scrollX и scrollY
 window.addEventListener('unload', e =>
 	cords.forEach(cord => (sessionStorage[cord] = window[cord]))
 );
 
-$(window).on('load', function(e) {});
+$(window).on('load', e => {});

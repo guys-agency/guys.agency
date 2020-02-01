@@ -12,6 +12,11 @@
 @import "../blocks/contact/contact.css";
 @import "../blocks/footer/footer.css";
 
+br {
+  margin: 0;
+  padding: 0;
+}
+
 .load-page{
   position: fixed;
   display: flex;

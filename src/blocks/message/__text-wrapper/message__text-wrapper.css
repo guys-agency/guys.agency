@@ -4,7 +4,7 @@
     max-width: 610px;
 }
 
-.message__text-wrapper>.message__text-container:nth-child(1){
+.message__text-wrapper>.message__text-container:nth-child(n+1){
     margin-bottom: 19px;
 }
 

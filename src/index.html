@@ -25,8 +25,8 @@
           <div class="logo__text">ребята</div> 
         </div>
         <div class="header__menu">
-          <ul>
-            <li><a class="active" href="#works">услуги/работы</a></li>
+          <ul id="menu">
+            <li><a href="#works">услуги/работы</a></li>
             <li><a href="#about">о нас</a></li>
             <li><a href="#contacts">связаться</a></li>
           </ul>
@@ -39,6 +39,7 @@
       <p class="text-create-chat"><a href="" class="blue">Костя</a> вступил в чат</p>
       <p class="text-create-chat"> <a href="" class="blue">Аня</a> вступила в чат</p>
       <p class="text-create-chat"><a href="" class="blue">Джордж</a> вступил в чат</p>
+      <div id="startBlock" class="message_block"></div>
       <!-- <div class="message__container message__container_k">
         <img src="./images/Message/AvatarKos.png" alt="" class="message__pic">
         <div class="message__text-container">
@@ -48,8 +49,8 @@
             <span></span>
           </div>
         </div>
-      </div>
-      <div class="message__container message__container_k">
+      </div> -->
+      <!-- <div class="message__container message__container_k">
         <img src="./images/Message/AvatarKos.png" alt="" class="message__pic">
         <div class="message__text-container">
           <div class="message__typing">
@@ -68,16 +69,17 @@
               <a href="motorfrist.ru">motorfirst.ru</a> — редизайн интернет-магазина для power-спорта
             </p>
           </div>
-        </div> -->
-      <!-- </div> -->
+        </div>
+      </div> -->
     </div>
     <div class="message" id="about">
       <div class="page-title active">
         о нас
       </div>
+      <div id="aboutBlock" class="message_block"></div>
     </div>
     <div class="message" id="works">
-        <div class="filter active">
+        <div id="filter" class="filter">
           <div class="page-title page-title_filter active">
             <a href="" class="active">Все</a><a href="">Фир. стиль</a><a href="">Интерфейсы</a><a href="">Веб разработка</a><a
               href="">Исследования</a>
@@ -86,11 +88,13 @@
         <div class="page-title active">
           услуги/работы
         </div>
+        <div id="worksBlock" class="message_block"></div>
       </div>
       <div class="message" id="contacts">
           <div class="page-title active">
             контакты
           </div>
+          <div id="contactsBlock" class="message_block"></div>
         </div>
     
   </div>
