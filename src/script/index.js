@@ -41,14 +41,14 @@ const profTypes = ['designs', 'devs', 'marketers'];
 // 			});
 // 		}
 // 	});
-// 	profTypes.forEach(elem => {
-// 		const test = `#${elem}H`;
-// 		console.log('job', test);
-// 		$(`#${elem}H`).click(e => {
-// 			e.preventDefault();
-// 			sidebar.forType(elem);
-// 		});
+// profTypes.forEach(elem => {
+// 	const test = `#${elem}H`;
+// 	console.log('job', test);
+// 	$(`#${elem}H`).click(e => {
+// 		e.preventDefault();
+// 		sidebar.forType(elem);
 // 	});
+// });
 // 	// Прокручиваем страницу к scrollX и scrollY из localStorage (либо 0,0 если там еще ничего нет)
 // 	window.scroll(...cords.map(cord => sessionStorage[cord]));
 // 	$('.load-page').css('display', 'none');
@@ -57,7 +57,7 @@ const profTypes = ['designs', 'devs', 'marketers'];
 const cords = ['scrollX', 'scrollY'];
 // Перед закрытием записываем в локалсторадж window.scrollX и window.scrollY как scrollX и scrollY
 window.addEventListener('unload', e =>
-	cords.forEach(cord => (sessionStorage[cord] = window[cord]))
+  cords.forEach(cord => (sessionStorage[cord] = window[cord]))
 );
 
 $(window).on('load', e => {});

@@ -247,6 +247,36 @@ class Message extends React.Component {
     }
   };
 
+  renderSidebar = () => {
+    const { data } = this.props;
+    const sidebarItemContainer = (
+      <SidebarItem dataUser={data[Object.keys(data)[0]].owner} />
+    );
+    ReactDOM.render(
+      <Sidebar sidebarItemContainer={sidebarItemContainer} />,
+      document.getElementById('sidebar')
+    );
+    document.getElementById('sidebar').classList.add('active');
+  };
+
+  renderSidebarProf = () => {
+    profTypes.forEach(elem => {
+      $(`#${elem}H`).click(e => {
+        e.preventDefault();
+        api.getUserData('type', elem).then(data => {
+          const container = Object.keys(data).map(elem => {
+            return <SidebarItem dataUser={data[elem]} key={elem} />;
+          });
+          ReactDOM.render(
+            <Sidebar sidebarItemContainer={container} />,
+            document.getElementById('sidebar')
+          );
+          $('.sidebar').addClass('active');
+        });
+      });
+    });
+  };
+
   render() {
     const { data } = this.props;
     const { container } = this.state;
@@ -259,6 +289,7 @@ class Message extends React.Component {
         }
       >
         <img
+          onClick={this.renderSidebar}
           src={data[Object.keys(data)[0]].owner.avatar}
           name={data[Object.keys(data)[0]].owner.name}
           className="message__pic"
@@ -271,6 +302,9 @@ class Message extends React.Component {
   componentDidMount() {
     this.renderAdd();
     this.createContainer();
+    if (blocks[this.props.indexBlock] == 'about') {
+      this.renderSidebarProf();
+    }
   }
 }
 
@@ -331,6 +365,7 @@ class BlockElem extends React.Component {
               i={i}
               x={x}
               changeBlock={this.addMessageToBlock}
+              indexBlock={this.props.indexBlock}
             />
           );
           for (let g = 0; g < wrapBlock.length - 1; g++) {
@@ -349,6 +384,7 @@ class BlockElem extends React.Component {
                 i={i}
                 x={i + 1}
                 changeBlock={this.addMessageToBlock}
+                indexBlock={this.props.indexBlock}
               />
             )
           : null;
@@ -364,12 +400,23 @@ class BlockElem extends React.Component {
 
   render() {
     const { block, render } = this.state;
-    const { nextBlock } = this.props;
-    if (render[render.length - 1]) {
+    // проверяет, отрисовывается последнее ли сообщение, и если да, то дает сигнал на отрисовку следующего блока
+    const nextIndex = this.props.indexBlock + 1;
+    if (render[render.length - 1] && nextIndex < blocks.length) {
       setTimeout(() => {
-        renderReady[nextBlock] = true;
-      }, 800);
+        dataFromApi.then(dataSort => {
+          ReactDOM.render(
+            <BlockElem
+              data={dataSort[blocks[nextIndex]]}
+              key={blocks[nextIndex]}
+              indexBlock={nextIndex}
+            />,
+            document.getElementById(blocks[nextIndex] + 'Block')
+          );
+        });
+      }, 1100);
     }
+    //отрисовка блока
     return <React.Fragment>{block}</React.Fragment>;
   }
 }
@@ -394,6 +441,9 @@ class Api {
       Object.assign({}, this.options.header)
     )
       .then(statusRequest)
+      .then(data => {
+        return data['data'];
+      })
       .catch(err => console.log(err));
   }
 
@@ -421,7 +471,7 @@ function statusRequest(res) {
 }
 
 const api = new Api({
-  baseUrl: 'http://127.0.0.1:3000',
+  baseUrl: 'http://127.0.0.1:3001',
   header: {
     headers: {
       'Content-Type': 'application/json',
@@ -457,47 +507,51 @@ const dataFromApi = api.getMessages().then(data => {
 });
 
 dataFromApi.then(dataSort => {
-  blocks.forEach((block, index) => {
-    if (block == 'start') {
-      ReactDOM.render(
-        <BlockElem
-          data={dataSort[block]}
-          key={block}
-          nextBlock={blocks[index + 1]}
-        />,
-        document.getElementById(block + 'Block')
-      );
-      $(`#${block}`).attr('appr', 'false');
-    } else {
-      $(window).scroll(function() {
-        if (
-          $(this).scrollTop() > $(`#works`).position().top &&
-          $(this).scrollTop() <
-            $(`#works`).position().top + $(`#works`).height()
-        ) {
-          document.getElementById('filter').classList.add('active');
-        } else {
-          document.getElementById('filter').classList.remove('active');
-        }
-        if (
-          $(this).scrollTop() + $(this).height() >
-            $(`#${block}`).position().top &&
-          $(`#${block}`).attr('appr') != 'false' &&
-          renderReady[block]
-        ) {
-          ReactDOM.render(
-            <BlockElem
-              data={dataSort[block]}
-              key={block}
-              nextBlock={blocks[index + 1]}
-            />,
-            document.getElementById(block + 'Block')
-          );
-          $(`#${block}`).attr('appr', 'false');
-        }
-      });
-    }
-  });
+  ReactDOM.render(
+    <BlockElem data={dataSort[blocks[0]]} key={blocks[0]} indexBlock={0} />,
+    document.getElementById(blocks[0] + 'Block')
+  );
+  // blocks.forEach((block, index) => {
+  //   if (block == 'start') {
+  //     ReactDOM.render(
+  //       <BlockElem
+  //         data={dataSort[block]}
+  //         key={block}
+  //         nextBlock={blocks[index + 1]}
+  //       />,
+  //       document.getElementById(block + 'Block')
+  //     );
+  //     $(`#${block}`).attr('appr', 'false');
+  //   } else {
+  //     $(window).scroll(function() {
+  //       if (
+  //         $(this).scrollTop() > $(`#works`).position().top &&
+  //         $(this).scrollTop() <
+  //           $(`#works`).position().top + $(`#works`).height()
+  //       ) {
+  //         document.getElementById('filter').classList.add('active');
+  //       } else {
+  //         document.getElementById('filter').classList.remove('active');
+  //       }
+  //       if (
+  //         $(this).scrollTop() + $(this).height() >
+  //           $(`#${block}`).position().top &&
+  //         $(`#${block}`).attr('appr') != 'false' &&
+  //         renderReady[block]
+  //       ) {
+  //         ReactDOM.render(
+  //           <BlockElem
+  //             data={dataSort[block]}
+  //             key={block}
+  //             nextBlock={blocks[index + 1]}
+  //           />,
+  //           document.getElementById(block + 'Block')
+  //         );
+  //         $(`#${block}`).attr('appr', 'false');
+  //       }
+  //     });
+  //   }
+  // });
   // profTypes.forEach(elem => {
   // 	const test = `#${elem}H`;
   // 	console.log('job', test);
@@ -534,6 +588,21 @@ $('body').on('click', '[href*="#"]', function(e) {
         <BlockElemDontInTurn data={dataSort[block]} key={block} />,
         document.getElementById(block + 'Block')
       );
+    });
+    profTypes.forEach(elem => {
+      $(`#${elem}H`).click(e => {
+        e.preventDefault();
+        api.getUserData('type', elem).then(data => {
+          const container = Object.keys(data).map(elem => {
+            return <SidebarItem dataUser={data[elem]} key={elem} />;
+          });
+          ReactDOM.render(
+            <Sidebar sidebarItemContainer={container} />,
+            document.getElementById('sidebar')
+          );
+          $('.sidebar').addClass('active');
+        });
+      });
     });
     const fixed_offset = $('.header__container').height() / 2;
     $('html,body')
@@ -731,3 +800,83 @@ class BlockElemDontInTurn extends React.Component {
     return <React.Fragment>{block}</React.Fragment>;
   }
 }
+
+const Sidebar = props => {
+  const sidebarItemContainer = props.sidebarItemContainer;
+  $(document).click(function(event) {
+    if ($(event.target).closest('.sidebar').length) return;
+    $('.sidebar').removeClass('active');
+    $(document).unbind();
+  });
+  return (
+    <React.Fragment>
+      <div className="sidebar__header">
+        <a href="" id="sidebarClose" onClick={removeSidebar}>
+          закрыть
+        </a>
+      </div>
+      <div className="sidebar__container">{sidebarItemContainer}</div>
+    </React.Fragment>
+  );
+};
+
+const SidebarItem = props => {
+  const dataUser = props.dataUser;
+  return (
+    <div className="sidebar__item">
+      <div className="item-head">
+        <img src={dataUser.avatarL} id="sidebaravatarL" alt="" />
+        <div className="desc">
+          <h3 id="sidebarname">{dataUser.name}</h3>
+          <span id="sidebarregalias">{dataUser.regalias}</span>
+          <div className="mail">
+            <a className="blue" id="sidebaremail" href={dataUser.email}>
+              написать сообщение
+            </a>
+          </div>
+        </div>
+      </div>
+      <div className="item-desc">
+        <div className="title">о себе</div>
+        <p
+          id="sidebarabout"
+          dangerouslySetInnerHTML={{
+            __html: dataUser.about,
+          }}
+        />
+      </div>
+    </div>
+  );
+};
+
+const removeSidebar = e => {
+  e.preventDefault();
+  console.log('e.target', e.target);
+  $('.sidebar').removeClass('active');
+  $('#tempContainer').remove();
+};
+
+// profTypes.forEach(elem => {
+//   const test = `#${elem}H`;
+//   console.log('job', test);
+//   $(`#${elem}H`).click(e => {
+//     e.preventDefault();
+//     api.getUserData('type', elem).then(data => {
+//       console.log('data', data);
+//       const container = Object.keys(data).map(elem => {
+//         return <SidebarItem dataUser={data[elem]} />;
+//       });
+//       ReactDOM.render(
+//         <Sidebar sidebarItemContainer={container} />,
+//         document.getElementById('sidebar')
+//       );
+//       document.getElementById('sidebar').classList.add('active');
+//     });
+//   });
+// });
+
+const test = () => {
+  e.preventDefault();
+  const sss = this;
+  console.log('test', sss);
+};

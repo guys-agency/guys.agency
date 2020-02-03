@@ -13,39 +13,36 @@ const routerIndex = require('./routes/index');
 // });
 
 const app = express();
-const { PORT = 3000 } = process.env;
+const { PORT = 3001 } = process.env;
 
-app.use(function(req, res, next) {
-	res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
-	res.header(
-		'Access-Control-Allow-Headers',
-		'Origin, X-Requested-With, Content-Type, Accept'
-	);
-	res.header(
-		'Access-Control-Allow-Methods',
-		'GET,HEAD,PUT,PATCH,POST,DELETE'
-	);
-	next();
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://127.0.0.1:5500');
+  res.header(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept'
+  );
+  res.header('Access-Control-Allow-Methods', 'GET,HEAD,PUT,PATCH,POST,DELETE');
+  next();
 });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect(
-	'mongodb+srv://admin:1@cluster0-ftb6g.gcp.mongodb.net/GuysTeam?retryWrites=true&w=majority',
-	{
-		useNewUrlParser: true,
-		useCreateIndex: true,
-		useFindAndModify: false,
-		useUnifiedTopology: true,
-	}
+  'mongodb+srv://admin:1@cluster0-ftb6g.gcp.mongodb.net/GuysTeam?retryWrites=true&w=majority',
+  {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
+  }
 );
 
 app.use('/', routerIndex);
 app.all('/*', (req, res) => {
-	res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
+  res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
 });
 
 app.listen(PORT, () => {
-	console.log(`App listening on port ${PORT}`);
+  console.log(`App listening on port ${PORT}`);
 });
