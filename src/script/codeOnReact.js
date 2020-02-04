@@ -3,6 +3,156 @@
 
 // import * as api from './api.js';
 
+class Work extends React.Component {
+  state = { typing: true };
+
+  createContainer = n => {
+    return container;
+  };
+
+  render() {
+    const { data } = this.props;
+    const { typing } = this.state;
+    const cats = data.cat.split(', ');
+    const catsReady = cats.map((elemCat, i) => {
+      return <span key={i}>{elemCat}</span>;
+    });
+    const imgs = data.imgRef.split(', ');
+    console.log('imgs', imgs);
+    const imgsContainer = imgs.map((elemImg, i) => {
+      return <img key={i} className="" src={elemImg} alt="" />;
+    });
+    return (
+      <div className="message__text-container" key={data.index}>
+        {typing && (
+          <div
+            className={
+              'message__typing ' +
+              ((data.owner._id == '5ded05e46180969dc7a73838' ||
+                data.owner._id == '5ded063a6180969dc7a73839') &&
+                'message__typing_black')
+            }
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        )}
+        {!typing && (
+          <div className="message__text visible">
+            <div className="message__att">
+              <div className="cat-list">{catsReady}</div>
+              <div className="img-list">{imgsContainer}</div>
+            </div>
+            <p
+              dangerouslySetInnerHTML={{
+                __html: data.text,
+              }}
+            />
+          </div>
+        )}
+      </div>
+    );
+  }
+  componentDidMount() {
+    const {
+      time,
+      index,
+      renderChange,
+      createContainer,
+      updateStateParent,
+    } = this.props;
+    // когда примонтировались ставим таймер для typing
+    setTimeout(() => {
+      this.setState({ typing: false });
+      renderChange(index + 1);
+      // и дополнительный таймер для сообщения родителю что элемент отрисован
+      setTimeout(() => {
+        updateStateParent();
+        createContainer();
+      }, 500);
+    }, time);
+  }
+}
+
+class WorksContainer extends React.Component {
+  state = { typing: true, coutWork: 3, data: [...this.props.data] };
+
+  worksFilter = () => {
+    const allWorks = this.props.data;
+    let thisInClass = this;
+    console.log('object');
+    $('body').on('click', '[href^="sort"]', function(e) {
+      console.log(
+        'this.hash',
+        $(this)
+          .attr('href')
+          .split('sort')[1]
+      );
+      const newData = allWorks.filter(elem => {
+        return elem.cat.includes(
+          $(this)
+            .attr('href')
+            .split('sort')[1]
+        );
+      });
+      thisInClass.setState({ testdata: newData });
+      e.preventDefault();
+    });
+  };
+
+  addWorkToRender = () => {
+    const newCountWork = this.state.coutWork + 1;
+    this.setState({ coutWork: newCountWork });
+  };
+
+  createContainer = n => {
+    const { data } = this.state;
+    const { typing } = this.state;
+    console.log('dataWork', data);
+    const container = data.map((elem, index) => {
+      if (index <= n) {
+        //категории превращаем в массив для отрисовки
+        return <Work data={elem} key={index} />;
+      }
+    });
+    return container;
+  };
+
+  render() {
+    const { coutWork } = this.state;
+
+    return (
+      <React.Fragment>
+        {this.createContainer(coutWork)}
+        <button onClick={this.addWorkToRender} className="button">
+          Еще работ мне!!
+        </button>
+      </React.Fragment>
+    );
+  }
+  componentDidMount() {
+    this.worksFilter();
+    const {
+      time,
+      index,
+      renderChange,
+      createContainer,
+      updateStateParent,
+    } = this.props;
+    // когда примонтировались ставим таймер для typing
+    setTimeout(() => {
+      this.setState({ typing: false });
+      renderChange(index + 1);
+      // и дополнительный таймер для сообщения родителю что элемент отрисован
+      setTimeout(() => {
+        updateStateParent();
+        createContainer();
+      }, 500);
+    }, time);
+  }
+}
+
 class TextContainer extends React.Component {
   state = { typing: true };
   render() {
@@ -81,7 +231,7 @@ class TextContainer extends React.Component {
 }
 
 class TextWrapper extends React.Component {
-  state = { render: [], container: [] };
+  state = { render: [], container: [], workData: [] };
   // заполняем массив false'ми для дальнейшего изменения (этот массив нужен для проверки разрещения на отрисовку элемента)
   renderAdd = () => {
     const { data } = this.props;
@@ -104,7 +254,7 @@ class TextWrapper extends React.Component {
     const timerQ = data[n].text.length * 10 > 1000;
 
     const timer = timerQ ? 1000 : data[n].text.length * 30;
-    return timer;
+    return 1;
   };
   // функция для сообщения родителю, что все элементы переданные классу отрисованы
   updateStateParentWrap = () => {
@@ -116,27 +266,77 @@ class TextWrapper extends React.Component {
     }
   };
 
+  workContainer = () => {
+    const { data } = this.props;
+    const workContainer = [];
+    console.log('data', data);
+    Object.keys(data).forEach(elem => {
+      if (data[elem].type === 'work') {
+        workContainer.push(data[elem]);
+      }
+    });
+    this.setState({ workData: workContainer });
+  };
+
+  // worksFilter = () => {
+  //   const allWorks = this.state.workData;
+  //   const test = this;
+  //   $('body').on('click', '[href^="sort"]', function(e) {
+  //     console.log(
+  //       'this.hash',
+  //       $(this)
+  //         .attr('href')
+  //         .split('sort')[1]
+  //     );
+  //     const newData = allWorks.filter(elem => {
+  //       return elem.cat.includes(
+  //         $(this)
+  //           .attr('href')
+  //           .split('sort')[1]
+  //       );
+  //     });
+  //     test.setState({ workData: newData });
+  //     e.preventDefault();
+  //   });
+  // };
+
   // создание контейнера для отрисовки
   createContainer = () => {
     const { data } = this.props;
-    const { render } = this.state;
+    const { render, workData } = this.state;
+    let worksAllreadyDone = false;
     const containerNew = Object.keys(data).map((item, index) => {
-      return (
-        render[index] && (
-          <React.Fragment key={data[item].index}>
-            <TextContainer
+      if (data[item].type != 'work' || !worksAllreadyDone) {
+        if (render[index] && data[item].type != 'work') {
+          return (
+            <React.Fragment key={data[item].index}>
+              <TextContainer
+                key={data[item].index}
+                data={data[item]}
+                time={this.timerTyping(item)}
+                renderChange={this.renderChangeWrap}
+                createContainer={this.createContainer}
+                index={index}
+                updateStateParent={this.updateStateParentWrap}
+              />
+              <br />
+            </React.Fragment>
+          );
+        } else if (render[index] && data[item].type == 'work') {
+          worksAllreadyDone = true;
+          return (
+            <WorksContainer
               key={data[item].index}
-              data={data[item]}
+              data={workData}
               time={this.timerTyping(item)}
               renderChange={this.renderChangeWrap}
               createContainer={this.createContainer}
               index={index}
               updateStateParent={this.updateStateParentWrap}
             />
-            <br />
-          </React.Fragment>
-        )
-      );
+          );
+        }
+      }
     });
     this.setState({ container: containerNew });
   };
@@ -146,6 +346,8 @@ class TextWrapper extends React.Component {
     return <div className="message__text-wrapper">{container}</div>;
   }
   componentDidMount() {
+    this.workContainer();
+    // this.worksFilter();
     this.renderAdd();
     this.createContainer();
   }
@@ -180,7 +382,7 @@ class Message extends React.Component {
     const timerQ = data[n].text.length * 10 > 1000;
 
     const timer = timerQ ? 1000 : data[n].text.length * 30;
-    return timer;
+    return 1;
   };
 
   // заполняем массив false'ми для дальнейшего изменения (этот массив нужен для проверки разрещения на отрисовку элемента)
@@ -453,12 +655,15 @@ class Api {
       .catch(err => console.log('getCard ERROR :', err));
   }
 
-  getMessageByBlock(block) {
+  getWorksByCat(cat) {
     return fetch(
-      this.options.baseUrl + '/messages/' + block,
+      this.options.baseUrl + '/messages/' + cat,
       Object.assign({}, this.options.header)
     )
       .then(statusRequest)
+      .then(data => {
+        return data['data'];
+      })
       .catch(err => console.log('addCard ERROR :', err));
   }
 }
@@ -568,6 +773,14 @@ dataFromApi.then(dataSort => {
 $('#menu > li > a').each((index, element) => {
   $(window).scroll(function() {
     if (
+      $(this).scrollTop() > $(`#works`).position().top &&
+      $(this).scrollTop() < $(`#works`).position().top + $(`#works`).height()
+    ) {
+      document.getElementById('filter').classList.add('active');
+    } else {
+      document.getElementById('filter').classList.remove('active');
+    }
+    if (
       $(this).scrollTop() + $('.header__container').height() >=
         $($(element).attr('href')).position().top &&
       $(this).scrollTop() + $('.header__container').height() <=
@@ -611,6 +824,29 @@ $('body').on('click', '[href*="#"]', function(e) {
     e.preventDefault();
   });
 });
+
+// $('body').on('click', '[href^="sort"]', function(e) {
+//   console.log(
+//     'this.hash',
+//     $(this)
+//       .attr('href')
+//       .split('sort')[1]
+//   );
+//   api
+//     .getWorksByCat(
+//       $(this)
+//         .attr('href')
+//         .split('sort')[1]
+//     )
+//     .then(works => {
+//       console.log('works[0]', works);
+//       ReactDOM.render(
+//         <BlockElem data={works} key={'work'} indexBlock={0} />,
+//         document.getElementById('worksBlock')
+//       );
+//     });
+//   e.preventDefault();
+// });
 
 class TextContainerDontInTurn extends React.Component {
   render() {

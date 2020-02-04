@@ -1,13 +1,13 @@
 const routerMessages = require('express').Router();
 const {
-	getMessages,
-	findByBlock,
-	createMessage,
-	deleteMessage,
+  getMessages,
+  findByWorksByCat,
+  createMessage,
+  deleteMessage,
 } = require('../controllers/messages');
 
 routerMessages.get('/', getMessages);
-routerMessages.get('/:block', findByBlock);
+routerMessages.get('/:cat', findByWorksByCat);
 routerMessages.post('/', createMessage);
 routerMessages.delete('/:MessageId', deleteMessage);
 
