@@ -572,6 +572,7 @@ class BlockElem extends React.Component {
     i: 0,
     render: [],
     dontInTurn: this.props.dontInTurn,
+    renderNextBlock: false,
   };
 
   //функция для изменения состояния render ребёнком
@@ -713,31 +714,38 @@ class BlockElem extends React.Component {
     const { changeRenderReady, indexBlock } = this.props;
     // проверяет, отрисовывается последнее ли сообщение, и если да, то дает сигнал на отрисовку следующего блока
     const nextIndex = indexBlock + 1;
-    if (render[render.length - 1] && nextIndex < blocks.length) {
+    if (
+      render[render.length - 1] &&
+      (nextIndex < blocks.length || blocks[indexBlock] == 'contacts') &&
+      !this.state.renderNextBlock
+    ) {
       renderReady[blocks[indexBlock]] = true;
-      setTimeout(
-        () => {
-          $(`#${blocks[nextIndex]}Title`).addClass('active');
-          setTimeout(
-            () => {
-              // changeRenderReady(this.props.indexBlock, nextIndex);
-              dataFromApi.then(dataSort => {
-                ReactDOM.render(
-                  <BlockElem
-                    data={dataSort[blocks[nextIndex]]}
-                    key={blocks[nextIndex]}
-                    indexBlock={nextIndex}
-                    dontInTurn={this.state.dontInTurn}
-                  />,
-                  document.getElementById(blocks[nextIndex] + 'Block')
-                );
-              });
-            },
-            this.state.dontInTurn ? 1 : 600
-          );
-        },
-        this.state.dontInTurn ? 1 : 500
-      );
+      if (blocks[indexBlock] != 'contacts') {
+        setTimeout(
+          () => {
+            $(`#${blocks[nextIndex]}Title`).addClass('active');
+            setTimeout(
+              () => {
+                // changeRenderReady(this.props.indexBlock, nextIndex);
+                dataFromApi.then(dataSort => {
+                  ReactDOM.render(
+                    <BlockElem
+                      data={dataSort[blocks[nextIndex]]}
+                      key={blocks[nextIndex]}
+                      indexBlock={nextIndex}
+                      dontInTurn={this.state.dontInTurn}
+                    />,
+                    document.getElementById(blocks[nextIndex] + 'Block')
+                  );
+                });
+              },
+              this.state.dontInTurn ? 1 : 600
+            );
+          },
+          this.state.dontInTurn ? 1 : 500
+        );
+      }
+      this.setState({ renderNextBlock: true });
     }
     //отрисовка блока
     return <React.Fragment>{block}</React.Fragment>;
@@ -969,6 +977,11 @@ let allreadyLoad = false;
 
 $('body').on('click', '[href*="#"]', function(e) {
   const fixed_offset = $('.header__container').height() / 2;
+  allreadyLoad = Object.keys(renderReady).every(elem => {
+    return renderReady[elem];
+  });
+  console.log('renderReady', renderReady);
+  console.log('allreadyLoad', allreadyLoad);
   setTimeout(
     () => {
       $('html,body')
