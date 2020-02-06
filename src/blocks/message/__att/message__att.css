@@ -27,18 +27,19 @@
     content: '';
 }
 
-.message__att img{
+.message__att .img-list div{
     max-width: 100%;
-    height: auto;
+    height: 283px;
 }
 
-.message__att img:first-child{
+.message__att .img-list div:first-child{
     border-top-right-radius: 13px;
     border-top-left-radius: 13px;
+    width: 100%;
 }
 
-.img-list>img:nth-child(n+2) {
-    width: 50%;
+.img-list>div:nth-child(n+2) {
+    max-width: 50%;
   }
 
 @media screen and (max-width: 530px){

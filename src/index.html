@@ -11,6 +11,7 @@
   <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script> 
   <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <script src="./vendor/jquery.bubble.text.js"></script>
 
 </head>
 <body>
@@ -33,6 +34,7 @@
         </div>
     </div>
   </div>
+  <div id="TEST"></div>
   <div id="mainWindow" class="main-window">
     <div class="message" id="start">
       <p class="text-create-chat"><a href="" class="blue">Даня</a> создал чат <b>“ребята”</b></p>
@@ -73,7 +75,7 @@
       </div> -->
     </div>
     <div class="message" id="about">
-      <div class="page-title active">
+      <div id='aboutTitle' class="page-title">
         о нас
       </div>
       <div id="aboutBlock" class="message_block"></div>
@@ -85,13 +87,13 @@
               href="sortисследования">Исследования</a>
           </div>
         </div>
-        <div class="page-title active">
+        <div id='worksTitle' class="page-title">
           услуги/работы
         </div>
         <div id="worksBlock" class="message_block"></div>
       </div>
       <div class="message" id="contacts">
-          <div class="page-title active">
+          <div id='contactsTitle' class="page-title">
             контакты
           </div>
           <div id="contactsBlock" class="message_block"></div>

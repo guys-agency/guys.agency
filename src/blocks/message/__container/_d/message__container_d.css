@@ -68,3 +68,7 @@
     flex-direction: column;
     align-items: flex-end;
 }
+
+.message__text-container_sticker{
+    border: none !important
+}

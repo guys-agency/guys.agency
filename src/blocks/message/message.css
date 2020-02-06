@@ -5,6 +5,7 @@
 @import "./__att/message__att.css";
 @import "./__container/message__container.css";
 @import "./__text-wrapper/message__text-wrapper.css";
+@import './__sticker/message__sticker.css';
 
 .message {
     display: flex;

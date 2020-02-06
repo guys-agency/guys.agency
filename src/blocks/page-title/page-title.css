@@ -13,13 +13,14 @@
     text-align: center;
     padding-top: 10px;
     padding-bottom: 10px;
-    opacity: 0.2;
+    opacity: 0;
     transition: all 0.3s;
     padding-right: 15px;
     padding-left: 15px;
 }
 
 .page-title.active{
+    animation: showAnimation 0.5s;
     opacity: 1;
 }
 
@@ -28,4 +29,8 @@
         font-size: 12px;
         max-width: 100%;
     }
+}
+
+@keyframes showAnimation {
+    from {opacity: 0;} to {opacity: 1;}
 }

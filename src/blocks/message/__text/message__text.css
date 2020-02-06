@@ -7,14 +7,18 @@
     height: 0;
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s;
+    transition: 5s;
+    
 }
 
 .message__text.visible{
+    /* animation: showMessage2 5s ; */
+    
     width: initial;
     height: initial;
     opacity: 1;
     visibility: visible; 
+    
 }
 
 @media screen and (max-width: 530px){
@@ -31,4 +35,12 @@
 
 .message__text a:hover{
     opacity: 0.6;
+}
+
+@keyframes showMessage2 {
+    from {opacity: 0;
+         width: 0;
+          height: 0;} to {opacity: 1;
+            width: initial;
+            height: initial;}
 }

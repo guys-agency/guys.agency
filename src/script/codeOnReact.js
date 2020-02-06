@@ -13,14 +13,24 @@ class Work extends React.Component {
   render() {
     const { data } = this.props;
     const { typing } = this.state;
+
     const cats = data.cat.split(', ');
     const catsReady = cats.map((elemCat, i) => {
       return <span key={i}>{elemCat}</span>;
     });
     const imgs = data.imgRef.split(', ');
-    console.log('imgs', imgs);
     const imgsContainer = imgs.map((elemImg, i) => {
-      return <img key={i} className="" src={elemImg} alt="" />;
+      return (
+        <div
+          key={i}
+          style={{
+            backgroundImage: 'url(' + elemImg + ')',
+            backgroundSize: 'contain',
+            backgroundRepeat: 'no-repeat',
+          }}
+          alt=""
+        ></div>
+      );
     });
     return (
       <div className="message__text-container" key={data.index}>
@@ -65,30 +75,66 @@ class Work extends React.Component {
     // когда примонтировались ставим таймер для typing
     setTimeout(() => {
       this.setState({ typing: false });
-      renderChange(index + 1);
+
       // и дополнительный таймер для сообщения родителю что элемент отрисован
-      setTimeout(() => {
-        updateStateParent();
-        createContainer();
-      }, 500);
+      setTimeout(
+        () => {
+          renderChange(index + 1);
+          updateStateParent();
+        },
+        this.props.dontInTurn ? 1 : 500
+      );
     }, time);
   }
 }
 
 class WorksContainer extends React.Component {
-  state = { typing: true, coutWork: 3, data: [...this.props.data] };
+  state = { typing: true, render: [], coutWork: 3, data: [...this.props.data] };
+
+  renderAdd = () => {
+    const { data } = this.props;
+    const ren = this.state.render;
+    ren[0] = true;
+    for (let i = 1; i < Object.keys(data).length; i++) {
+      ren[i] = false;
+    }
+    this.setState({ render: ren });
+  };
+  //функция для изменения состояния render ребёнком
+  renderChangeWork = n => {
+    const ren = this.state.render;
+    ren[n] = true;
+    this.setState({ render: ren });
+  };
+  // рассчитывает время для таймера для последующей передачи ребенку
+  timerTyping = n => {
+    if (this.props.dontInTurn) {
+      return 0;
+    }
+    const { data } = this.state;
+    const timerQ = data[n].text.length * 10 > 700;
+
+    const timer = timerQ ? 700 : data[n].text.length * 30;
+    return timer;
+  };
+  // функция для сообщения родителю, что все элементы переданные классу отрисованы
+  updateStateParentWork = () => {
+    const { render } = this.state;
+    const { updateStateParent, renderChange } = this.props;
+    if (render[this.state.coutWork + 1]) {
+      renderChange(
+        this.props.firstElem,
+        this.props.firstElem + this.props.countElem
+      );
+      updateStateParent();
+    }
+  };
 
   worksFilter = () => {
     const allWorks = this.props.data;
     let thisInClass = this;
-    console.log('object');
+
     $('body').on('click', '[href^="sort"]', function(e) {
-      console.log(
-        'this.hash',
-        $(this)
-          .attr('href')
-          .split('sort')[1]
-      );
       const newData = allWorks.filter(elem => {
         return elem.cat.includes(
           $(this)
@@ -96,7 +142,8 @@ class WorksContainer extends React.Component {
             .split('sort')[1]
         );
       });
-      thisInClass.setState({ testdata: newData });
+      thisInClass.setState({ data: newData, render: [] });
+      thisInClass.renderAdd();
       e.preventDefault();
     });
   };
@@ -107,13 +154,26 @@ class WorksContainer extends React.Component {
   };
 
   createContainer = n => {
-    const { data } = this.state;
-    const { typing } = this.state;
-    console.log('dataWork', data);
+    const { data, render } = this.state;
     const container = data.map((elem, index) => {
       if (index <= n) {
         //категории превращаем в массив для отрисовки
-        return <Work data={elem} key={index} />;
+        return (
+          render[index] && (
+            <React.Fragment key={index}>
+              <Work
+                data={elem}
+                time={this.timerTyping(index)}
+                renderChange={this.renderChangeWork}
+                createContainer={this.createContainer}
+                index={index}
+                updateStateParent={this.updateStateParentWork}
+                dontInTurn={this.props.dontInTurn}
+              />
+              <br />
+            </React.Fragment>
+          )
+        );
       }
     });
     return container;
@@ -132,42 +192,29 @@ class WorksContainer extends React.Component {
     );
   }
   componentDidMount() {
+    this.renderAdd();
     this.worksFilter();
-    const {
-      time,
-      index,
-      renderChange,
-      createContainer,
-      updateStateParent,
-    } = this.props;
-    // когда примонтировались ставим таймер для typing
-    setTimeout(() => {
-      this.setState({ typing: false });
-      renderChange(index + 1);
-      // и дополнительный таймер для сообщения родителю что элемент отрисован
-      setTimeout(() => {
-        updateStateParent();
-        createContainer();
-      }, 500);
-    }, time);
   }
 }
 
 class TextContainer extends React.Component {
-  state = { typing: true };
+  state = { typing: true, classSS: '' };
+
+  classfada = () => {
+    if (this.props.data.type == 'stickers' && !this.state.typing) {
+      return 'message__text-container message__text-container_sticker';
+    } else {
+      return 'message__text-container';
+    }
+  };
+
   render() {
     const { data } = this.props;
     const { typing } = this.state;
-    let catsReady;
-    //категории превращаем в массив для отрисовки
-    if (data.imgRef != '') {
-      const cats = data.cat.split(', ');
-      catsReady = cats.map((elem, i) => {
-        return <span key={i}>{elem}</span>;
-      });
-    }
+    this.test();
+
     return (
-      <div className="message__text-container">
+      <div className={this.classfada()}>
         {typing && (
           <div
             className={
@@ -182,33 +229,27 @@ class TextContainer extends React.Component {
             <span></span>
           </div>
         )}
-        {!typing &&
-          ((data.imgRef === '' && (
-            <div
-              className="message__text visible"
-              dangerouslySetInnerHTML={{
-                __html: data.text,
-              }}
-            />
-          )) ||
-            (data.imgRef != '' && (
-              <div className="message__text visible">
-                <div className="message__att">
-                  <div className="cat-list">{catsReady}</div>
-                  <div className="img-list">
-                    <img className="" src={data.imgRef} alt="" />
-                  </div>
-                </div>
-                <p
-                  dangerouslySetInnerHTML={{
-                    __html: data.text,
-                  }}
-                />
-              </div>
-            )))}
+        {(!typing && data.type == 'message' && (
+          <div
+            className={'message__text ' + this.state.classSS}
+            dangerouslySetInnerHTML={{
+              __html: data.text,
+            }}
+          />
+        )) ||
+          (data.type == 'stickers' && (
+            <img className="message__sticker" src={data.imgRef} />
+          ))}
       </div>
     );
   }
+
+  test = () => {
+    setTimeout(() => {
+      this.setState({ classSS: 'visible' });
+    }, 0);
+  };
+
   componentDidMount() {
     const {
       time,
@@ -222,16 +263,25 @@ class TextContainer extends React.Component {
       this.setState({ typing: false });
       renderChange(index + 1);
       // и дополнительный таймер для сообщения родителю что элемент отрисован
-      setTimeout(() => {
-        updateStateParent();
-        createContainer();
-      }, 500);
+      setTimeout(
+        () => {
+          updateStateParent();
+          createContainer();
+        },
+        this.props.dontInTurn ? 10 : 500
+      );
     }, time);
   }
 }
 
 class TextWrapper extends React.Component {
-  state = { render: [], container: [], workData: [] };
+  state = {
+    render: [],
+    container: [],
+    workData: [],
+    countElem: 0,
+    firstElem: 0,
+  };
   // заполняем массив false'ми для дальнейшего изменения (этот массив нужен для проверки разрещения на отрисовку элемента)
   renderAdd = () => {
     const { data } = this.props;
@@ -248,13 +298,24 @@ class TextWrapper extends React.Component {
     ren[n] = true;
     this.setState({ render: ren });
   };
+
+  renderChangeForWork = (s, e) => {
+    const ren = [...this.state.render];
+    for (let i = s; i <= e; i++) {
+      ren[i] = true;
+    }
+    this.setState({ render: ren });
+  };
   // рассчитывает время для таймера для последующей передачи ребенку
   timerTyping = n => {
+    if (this.props.dontInTurn) {
+      return 10;
+    }
     const { data } = this.props;
-    const timerQ = data[n].text.length * 10 > 1000;
+    const timerQ = data[n].text.length * 10 > 700;
 
-    const timer = timerQ ? 1000 : data[n].text.length * 30;
-    return 1;
+    const timer = timerQ ? 700 : data[n].text.length * 30;
+    return timer;
   };
   // функция для сообщения родителю, что все элементы переданные классу отрисованы
   updateStateParentWrap = () => {
@@ -269,36 +330,23 @@ class TextWrapper extends React.Component {
   workContainer = () => {
     const { data } = this.props;
     const workContainer = [];
-    console.log('data', data);
-    Object.keys(data).forEach(elem => {
+    let firstElemNew = null;
+    let countElemNew = 0;
+    Object.keys(data).forEach((elem, index) => {
       if (data[elem].type === 'work') {
+        if (firstElemNew === null) {
+          firstElemNew = index;
+        }
+        countElemNew += 1;
         workContainer.push(data[elem]);
       }
     });
-    this.setState({ workData: workContainer });
+    this.setState({
+      workData: workContainer,
+      firstElem: firstElemNew,
+      countElem: countElemNew,
+    });
   };
-
-  // worksFilter = () => {
-  //   const allWorks = this.state.workData;
-  //   const test = this;
-  //   $('body').on('click', '[href^="sort"]', function(e) {
-  //     console.log(
-  //       'this.hash',
-  //       $(this)
-  //         .attr('href')
-  //         .split('sort')[1]
-  //     );
-  //     const newData = allWorks.filter(elem => {
-  //       return elem.cat.includes(
-  //         $(this)
-  //           .attr('href')
-  //           .split('sort')[1]
-  //       );
-  //     });
-  //     test.setState({ workData: newData });
-  //     e.preventDefault();
-  //   });
-  // };
 
   // создание контейнера для отрисовки
   createContainer = () => {
@@ -318,6 +366,7 @@ class TextWrapper extends React.Component {
                 createContainer={this.createContainer}
                 index={index}
                 updateStateParent={this.updateStateParentWrap}
+                dontInTurn={this.props.dontInTurn}
               />
               <br />
             </React.Fragment>
@@ -329,10 +378,13 @@ class TextWrapper extends React.Component {
               key={data[item].index}
               data={workData}
               time={this.timerTyping(item)}
-              renderChange={this.renderChangeWrap}
+              renderChange={this.renderChangeForWork}
               createContainer={this.createContainer}
               index={index}
               updateStateParent={this.updateStateParentWrap}
+              firstElem={this.state.firstElem}
+              countElem={this.state.countElem}
+              dontInTurn={this.props.dontInTurn}
             />
           );
         }
@@ -347,7 +399,6 @@ class TextWrapper extends React.Component {
   }
   componentDidMount() {
     this.workContainer();
-    // this.worksFilter();
     this.renderAdd();
     this.createContainer();
   }
@@ -378,11 +429,14 @@ class Message extends React.Component {
 
   // рассчитывает время для таймера для последующей передачи ребенку
   timerTyping = n => {
+    if (this.props.dontInTurn) {
+      return 10;
+    }
     const { data } = this.props;
     const timerQ = data[n].text.length * 10 > 1000;
 
     const timer = timerQ ? 1000 : data[n].text.length * 30;
-    return 1;
+    return timer;
   };
 
   // заполняем массив false'ми для дальнейшего изменения (этот массив нужен для проверки разрещения на отрисовку элемента)
@@ -416,6 +470,7 @@ class Message extends React.Component {
           renderChange={this.renderChange.bind(this)}
           createContainer={this.createContainer}
           updateStateParent={this.updateStateParent}
+          dontInTurn={this.props.dontInTurn}
         />
       );
     } else {
@@ -430,6 +485,7 @@ class Message extends React.Component {
                 renderChange={this.renderChange.bind(this)}
                 createContainer={this.createContainer}
                 updateStateParent={this.updateStateParent}
+                dontInTurn={this.props.dontInTurn}
               />
             </React.Fragment>
           )
@@ -515,6 +571,7 @@ class BlockElem extends React.Component {
     block: [],
     i: 0,
     render: [],
+    dontInTurn: this.props.dontInTurn,
   };
 
   //функция для изменения состояния render ребёнком
@@ -541,6 +598,7 @@ class BlockElem extends React.Component {
   addMessageToBlock = () => {
     const { data } = this.props;
     const newBlock = [...this.state.block];
+
     let x;
     for (let i = newBlock.length; i < Object.keys(data).length; i++) {
       x = i + 1;
@@ -568,6 +626,7 @@ class BlockElem extends React.Component {
               x={x}
               changeBlock={this.addMessageToBlock}
               indexBlock={this.props.indexBlock}
+              dontInTurn={this.state.dontInTurn}
             />
           );
           for (let g = 0; g < wrapBlock.length - 1; g++) {
@@ -587,6 +646,7 @@ class BlockElem extends React.Component {
                 x={i + 1}
                 changeBlock={this.addMessageToBlock}
                 indexBlock={this.props.indexBlock}
+                dontInTurn={this.state.dontInTurn}
               />
             )
           : null;
@@ -598,30 +658,132 @@ class BlockElem extends React.Component {
   componentDidMount() {
     this.renderAdd();
     this.addMessageToBlock();
+    // let thisInClass = this;
+
+    // let clickHasBeen = false;
+    // $('body').on('click', '[href*="#"]', function(e) {
+    //   debugger;
+    //   thisInClass.setState({ dontInTurn: true });
+    //   // blocks.forEach((block, index) => {
+    //   //   ReactDOM.render(
+    //   //     <BlockElemDontInTurn data={dataSort[block]} key={block} />,
+    //   //     document.getElementById(block + 'Block')
+    //   //   );
+    //   // });
+    //   // profTypes.forEach(elem => {
+    //   //   $(`#${elem}H`).click(e => {
+    //   //     e.preventDefault();
+    //   //     api.getUserData('type', elem).then(data => {
+    //   //       const container = Object.keys(data).map(elem => {
+    //   //         return <SidebarItem dataUser={data[elem]} key={elem} />;
+    //   //       });
+    //   //       ReactDOM.render(
+    //   //         <Sidebar sidebarItemContainer={container} />,
+    //   //         document.getElementById('sidebar')
+    //   //       );
+    //   //       $('.sidebar').addClass('active');
+    //   //     });
+    //   //   });
+
+    //   const fixed_offset = $('.header__container').height() / 2;
+    //   if (clickHasBeen) {
+    //     $('html,body')
+    //       .stop()
+    //       .animate(
+    //         { scrollTop: $(this.hash).position().top - fixed_offset },
+    //         1000
+    //       );
+    //   } else {
+    //     setTimeout(() => {
+    //       $('html,body')
+    //         .stop()
+    //         .animate(
+    //           { scrollTop: $(this.hash).position().top - fixed_offset },
+    //           1000
+    //         );
+    //     }, 2000);
+    //   }
+    //   clickHasBeen = true;
+    //   e.preventDefault();
+    // });
   }
 
   render() {
     const { block, render } = this.state;
+    const { changeRenderReady, indexBlock } = this.props;
     // проверяет, отрисовывается последнее ли сообщение, и если да, то дает сигнал на отрисовку следующего блока
-    const nextIndex = this.props.indexBlock + 1;
+    const nextIndex = indexBlock + 1;
     if (render[render.length - 1] && nextIndex < blocks.length) {
-      setTimeout(() => {
-        dataFromApi.then(dataSort => {
-          ReactDOM.render(
-            <BlockElem
-              data={dataSort[blocks[nextIndex]]}
-              key={blocks[nextIndex]}
-              indexBlock={nextIndex}
-            />,
-            document.getElementById(blocks[nextIndex] + 'Block')
+      renderReady[blocks[indexBlock]] = true;
+      setTimeout(
+        () => {
+          $(`#${blocks[nextIndex]}Title`).addClass('active');
+          setTimeout(
+            () => {
+              // changeRenderReady(this.props.indexBlock, nextIndex);
+              dataFromApi.then(dataSort => {
+                ReactDOM.render(
+                  <BlockElem
+                    data={dataSort[blocks[nextIndex]]}
+                    key={blocks[nextIndex]}
+                    indexBlock={nextIndex}
+                    dontInTurn={this.state.dontInTurn}
+                  />,
+                  document.getElementById(blocks[nextIndex] + 'Block')
+                );
+              });
+            },
+            this.state.dontInTurn ? 1 : 600
           );
-        });
-      }, 1100);
+        },
+        this.state.dontInTurn ? 1 : 500
+      );
     }
     //отрисовка блока
     return <React.Fragment>{block}</React.Fragment>;
   }
 }
+
+// class App extends React.Component {
+//   state = { renderReady: this.props.renderReady, blocks: this.props.blocks };
+
+//   renderAllBlocks = () => {
+//     const { blocks, renderReady } = this.state;
+//     blocks.forEach((elem, index) => {
+//       if (renderReady[elem]) {
+//         dataFromApi.then(dataSort => {
+//           ReactDOM.render(
+//             <BlockElem
+//               data={dataSort[elem]}
+//               key={elem}
+//               indexBlock={index}
+//               dontInTurn={true}
+//               changeRenderReady={this.changeRenderReady}
+//             />,
+//             document.getElementById(elem + 'Block')
+//           );
+//         });
+//       }
+//     });
+//   };
+
+//   componentWillUnmount() {
+//     console.log('object');
+//   }
+
+//   changeRenderReady = (index, nextIndex) => {
+//     const renderReadyNew = this.state.renderReady;
+//     const { blocks } = this.state;
+//     renderReadyNew[blocks[nextIndex]] = true;
+//     renderReadyNew[blocks[index]] = false;
+//     this.setState({ renderReady: renderReadyNew });
+//   };
+
+//   render() {
+//     this.renderAllBlocks();
+//     return null;
+//   }
+// }
 
 class Api {
   constructor(options) {
@@ -687,7 +849,7 @@ const api = new Api({
 const blocks = ['start', 'about', 'works', 'contacts'];
 const profTypes = ['designs', 'devs', 'marketers'];
 const renderReady = {
-  start: true,
+  start: false,
   about: false,
   works: false,
   contacts: false,
@@ -712,8 +874,17 @@ const dataFromApi = api.getMessages().then(data => {
 });
 
 dataFromApi.then(dataSort => {
+  // ReactDOM.render(
+  //   <App blocks={blocks} key={blocks[0]} renderReady={renderReady} />,
+  //   document.getElementById('TEST')
+  // );
   ReactDOM.render(
-    <BlockElem data={dataSort[blocks[0]]} key={blocks[0]} indexBlock={0} />,
+    <BlockElem
+      data={dataSort[blocks[0]]}
+      key={blocks[0]}
+      indexBlock={0}
+      dontInTurn={false}
+    />,
     document.getElementById(blocks[0] + 'Block')
   );
   // blocks.forEach((block, index) => {
@@ -794,59 +965,69 @@ $('#menu > li > a').each((index, element) => {
   });
 });
 
+let allreadyLoad = false;
+
 $('body').on('click', '[href*="#"]', function(e) {
-  dataFromApi.then(dataSort => {
-    blocks.forEach((block, index) => {
+  const fixed_offset = $('.header__container').height() / 2;
+  setTimeout(
+    () => {
+      $('html,body')
+        .stop()
+        .animate(
+          { scrollTop: $(this.hash).position().top - fixed_offset },
+          1000
+        );
+    },
+    allreadyLoad ? 0 : 800
+  );
+  if (!allreadyLoad) {
+    let renderElem;
+    Object.keys(renderReady).find(elem => {
+      if (!renderReady[elem]) {
+        renderElem = elem;
+        return true;
+      }
+    });
+    dataFromApi.then(dataSort => {
+      ReactDOM.unmountComponentAtNode(
+        document.getElementById(renderElem + 'Block')
+      );
       ReactDOM.render(
-        <BlockElemDontInTurn data={dataSort[block]} key={block} />,
-        document.getElementById(block + 'Block')
+        <BlockElem
+          data={dataSort[renderElem]}
+          key={renderElem}
+          indexBlock={blocks.indexOf(renderElem)}
+          dontInTurn={true}
+        />,
+        document.getElementById(renderElem + 'Block')
       );
     });
-    profTypes.forEach(elem => {
-      $(`#${elem}H`).click(e => {
-        e.preventDefault();
-        api.getUserData('type', elem).then(data => {
-          const container = Object.keys(data).map(elem => {
-            return <SidebarItem dataUser={data[elem]} key={elem} />;
-          });
-          ReactDOM.render(
-            <Sidebar sidebarItemContainer={container} />,
-            document.getElementById('sidebar')
-          );
-          $('.sidebar').addClass('active');
-        });
-      });
-    });
-    const fixed_offset = $('.header__container').height() / 2;
-    $('html,body')
-      .stop()
-      .animate({ scrollTop: $(this.hash).position().top - fixed_offset }, 1000);
-    e.preventDefault();
-  });
-});
+    allreadyLoad = true;
+  }
 
-// $('body').on('click', '[href^="sort"]', function(e) {
-//   console.log(
-//     'this.hash',
-//     $(this)
-//       .attr('href')
-//       .split('sort')[1]
-//   );
-//   api
-//     .getWorksByCat(
-//       $(this)
-//         .attr('href')
-//         .split('sort')[1]
-//     )
-//     .then(works => {
-//       console.log('works[0]', works);
-//       ReactDOM.render(
-//         <BlockElem data={works} key={'work'} indexBlock={0} />,
-//         document.getElementById('worksBlock')
-//       );
-//     });
-//   e.preventDefault();
-// });
+  // blocks.forEach((block, index) => {
+  //   ReactDOM.render(
+  //     <BlockElemDontInTurn data={dataSort[block]} key={block} />,
+  //     document.getElementById(block + 'Block')
+  //   );
+  // });
+  // profTypes.forEach(elem => {
+  //   $(`#${elem}H`).click(e => {
+  //     e.preventDefault();
+  //     api.getUserData('type', elem).then(data => {
+  //       const container = Object.keys(data).map(elem => {
+  //         return <SidebarItem dataUser={data[elem]} key={elem} />;
+  //       });
+  //       ReactDOM.render(
+  //         <Sidebar sidebarItemContainer={container} />,
+  //         document.getElementById('sidebar')
+  //       );
+  //       $('.sidebar').addClass('active');
+  //     });
+  //   });
+
+  e.preventDefault();
+});
 
 class TextContainerDontInTurn extends React.Component {
   render() {
@@ -1091,25 +1272,6 @@ const removeSidebar = e => {
   $('.sidebar').removeClass('active');
   $('#tempContainer').remove();
 };
-
-// profTypes.forEach(elem => {
-//   const test = `#${elem}H`;
-//   console.log('job', test);
-//   $(`#${elem}H`).click(e => {
-//     e.preventDefault();
-//     api.getUserData('type', elem).then(data => {
-//       console.log('data', data);
-//       const container = Object.keys(data).map(elem => {
-//         return <SidebarItem dataUser={data[elem]} />;
-//       });
-//       ReactDOM.render(
-//         <Sidebar sidebarItemContainer={container} />,
-//         document.getElementById('sidebar')
-//       );
-//       document.getElementById('sidebar').classList.add('active');
-//     });
-//   });
-// });
 
 const test = () => {
   e.preventDefault();

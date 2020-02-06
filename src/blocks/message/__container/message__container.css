@@ -9,10 +9,15 @@
     align-items: flex-start; 
     max-width: 710px;
     margin-bottom: 40px;
+    animation: showMessage 1s;
 }
 
 @media screen and (max-width: 530px){
     .message__container {
         margin-bottom: 30px;
     }
+}
+
+@keyframes showMessage {
+    from {opacity: 0;} to {opacity: 1;}
 }

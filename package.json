@@ -13,6 +13,8 @@
   "license": "ISC",
   "dependencies": {
     "babel-polyfill": "^6.26.0",
+    "bem-tools-core": "0.0.3",
+    "bem-tools-create": "^2.3.0",
     "core-js": "^3.1.4",
     "cors": "^2.8.5",
     "eslint-config-airbnb-base": "^14.0.0",
